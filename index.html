@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#4285F4">
+<title>asgracrypto</title>
+<style>
+:root{--bg:#fff;--s:#f8f9fa;--tx:#202124;--mut:#5f6368;--ln:#dadce0;--b:#4285F4;--r:#EA4335;--y:#FBBC04;--g:#34A853;--bl:#e8f0fe;--gl:#e6f4ea;--rl:#fce8e6;--yl:#fef7e0;--yt:#8a5a00}
+@media(prefers-color-scheme:dark){:root{--bg:#202124;--s:#2d2e31;--tx:#e8eaed;--mut:#9aa0a6;--ln:#3c4043;--bl:#1c2b46;--gl:#17301f;--rl:#3b1f1d;--yl:#3a3012;--yt:#fdd663}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.55 "Google Sans",Roboto,"Segoe UI",system-ui,sans-serif}
+header,main{max-width:800px;margin:0 auto;padding:0 16px}
+header{padding-top:18px;display:flex;flex-direction:column;gap:12px;align-items:center}
+h1{margin:0;font-size:34px;font-weight:500;letter-spacing:-.5px}
+#sf{width:100%}
+#q{width:100%;border:1px solid var(--ln);border-radius:99px;padding:12px 20px;font:inherit;background:var(--bg);color:var(--tx)}
+#q:focus{outline:0;border-color:transparent;box-shadow:0 1px 6px rgba(66,133,244,.45)}
+nav{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--ln);display:flex;justify-content:center;margin-top:10px;overflow-x:auto}
+nav button{background:none;border:0;padding:13px 18px;font:inherit;color:var(--mut);border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap}
+nav button.on{color:var(--b);border-color:var(--b);font-weight:500}
+h2{font-size:18px;font-weight:500;margin:26px 0 10px}h3{font-size:16px;font-weight:500;margin:0}
+.al{padding:10px 14px;border-radius:12px;margin-top:10px;font-size:14px}.al small{display:block;color:var(--mut)}
+.al.r{background:var(--rl)}.al.y{background:var(--yl)}.al.g{background:var(--gl)}.al.b{background:var(--bl)}
+.c{border:1px solid var(--ln);border-radius:16px;padding:14px 16px;margin:10px 0;background:var(--bg)}
+.c[data-s]{cursor:pointer}.c[data-s]:hover{box-shadow:0 1px 3px rgba(60,64,67,.3)}
+.t{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}
+.ch{display:inline-block;font-size:12px;padding:2px 10px;border-radius:99px;background:var(--s);color:var(--mut);margin-left:4px}
+.ch.L,.ch.ok{background:var(--gl);color:var(--g)}.ch.S{background:var(--rl);color:var(--r)}.ch.wait{background:var(--yl);color:var(--yt)}.ch.b{background:var(--bl);color:var(--b)}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:8px 0}.g4 span{display:block;color:var(--mut);font-size:12px}
+.m{color:var(--mut);font-size:13px}.w{color:var(--yt);font-size:13px}
+.sz{margin-top:8px;padding:8px 12px;background:var(--s);border-radius:10px;font-size:13px}
+button.p{background:var(--b);color:#fff;border:0;border-radius:99px;padding:9px 20px;font:inherit;cursor:pointer}button.p:disabled{opacity:.5}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin:8px 0}
+.bar label{font-size:12px;color:var(--mut);display:flex;flex-direction:column;gap:3px}
+.bar input{width:96px;border:1px solid var(--ln);border-radius:10px;padding:8px 10px;font:inherit;background:var(--bg);color:var(--tx)}
+.fl button{border:1px solid var(--ln);background:var(--bg);color:var(--tx);border-radius:99px;padding:7px 14px;font:inherit;cursor:pointer;margin-right:6px}
+.fl button.on{background:var(--bl);border-color:var(--b);color:var(--b)}
+#pg{height:3px;background:var(--ln);border-radius:2px;overflow:hidden;margin:10px 0 4px}#pg i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--b),var(--r),var(--y),var(--g));transition:width .3s}
+.sc{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{padding:10px 8px;border-bottom:1px solid var(--ln);text-align:left;white-space:nowrap}th{color:var(--mut);font-weight:500}tr[data-s]{cursor:pointer}tr[data-s]:hover{background:var(--s)}
+.tr{position:relative;width:90px;height:6px;border-radius:3px;background:linear-gradient(90deg,var(--g),var(--ln) 30%,var(--ln) 70%,var(--r))}.tr i{position:absolute;top:-3px;width:12px;height:12px;border-radius:50%;background:var(--tx);margin-left:-6px}
+dialog{width:min(720px,96vw);max-height:92vh;border:0;border-radius:24px;padding:18px;background:var(--bg);color:var(--tx)}
+dialog::backdrop{background:rgba(32,33,36,.55)}
+.x{float:right;background:var(--s);border:0;border-radius:50%;width:34px;height:34px;font-size:20px;cursor:pointer;color:var(--tx)}
+.tf{margin:8px 0}.tf button{border:1px solid var(--ln);background:var(--bg);color:var(--tx);border-radius:99px;padding:5px 14px;font:inherit;cursor:pointer;margin-right:6px}.tf button.on{background:var(--bl);border-color:var(--b);color:var(--b)}
+svg{display:block;border-radius:12px;background:var(--s)}svg text{font:10px "Google Sans",Roboto,system-ui,sans-serif}
+li{margin:8px 0}
+:focus-visible{outline:2px solid var(--b);outline-offset:2px}
+footer{max-width:800px;margin:30px auto;padding:0 16px;color:var(--mut);font-size:12px}
+@media(max-width:520px){.g4{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+</style></head><body>
+<header><h1 id="wm" aria-label="asgracrypto"></h1>
+<form id="sf"><input id="q" list="dl" placeholder="Cari koin, contoh: BTC atau SOL" autocomplete="off" enterkeyhint="search"><datalist id="dl"></datalist></form></header>
+<nav id="tabs"><button data-t="home" class="on">Ringkasan</button><button data-t="setup">Setup</button><button data-t="watch">Pantauan</button><button data-t="rule">Strategi</button></nav>
+<main>
+<div id="al"></div>
+<div class="bar"><button class="p" id="go">Pindai ulang</button><span id="st" class="m"></span></div><div id="pg"><i></i></div>
+
+<section id="t-home">
+<h2>Gerbang BTC</h2><div id="btcc" class="c m">Memuat</div>
+<h2>Dominasi BTC dan musim altcoin</h2><div id="domc" class="c m">Menunggu pindai</div>
+<h2>Setup terkuat</h2><div id="top3"></div>
+</section>
+
+<section id="t-setup" hidden>
+<div class="bar"><label>Modal ($)<input id="cap" type="number" min="0"></label><label>Risiko per trade (%)<input id="rk" type="number" step=".1" min="0"></label></div>
+<div class="fl" id="flt"><button data-f="all" class="on">Semua</button><button data-f="1">Long</button><button data-f="-1">Short</button><button data-f="a">Aktif</button></div>
+<div id="setups"></div>
+</section>
+
+<section id="t-watch" hidden>
+<p class="m">Ketuk koin untuk melihat grafik dan rencana jika-maka.</p>
+<div class="sc"><table id="wt"></table></div>
+</section>
+
+<section id="t-rule" hidden>
+<p class="m"><span class="ch ok">Dari Eliz</span> disebut langsung di materi. <span class="ch wait">Tafsiran</span> angka atau rumus pilihan saya.</p>
+<ul id="rl" style="padding-left:18px"></ul>
+</section>
+</main>
+<footer>Alat bantu riset, bukan saran finansial. Level dan rencana dihitung otomatis dari data Binance dan tidak menggantikan penilaian sendiri. Hasil trader lain tidak menjamin hasil kamu.</footer>
+<dialog id="dg"></dialog>
+
+<script type="module">
+import {bj,kl,NOT,fmt as f,analyze,alertList} from './engine.mjs';
+const $=s=>document.querySelector(s),SD=['turun','datar','naik'];
+const ld=k=>{try{return localStorage.getItem(k)}catch(e){return null}},sv=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
+let all=[],btc=null,flt='all',extra=[],cur=null,tfv='4h';
+$('#wm').innerHTML=[...'asgracrypto'].map((c,i)=>`<span style="color:var(--${'bryg'[i%4]})">${c}</span>`).join('');
+$('#cap').value=ld('cap')||1000;$('#rk').value=ld('rk')||1;
+
+const RULES=[['ok','Tanpa pemicu, tanpa trade. Tengah range adalah zona tanpa trade, dan tidak mengejar harga.'],
+['ok','Pemicu: sweep di luar range, reclaim, lalu entry di retest. SL di wick sweep.'],
+['ok','Level berupa kotak di tepi range, bukan garis. Range taktis 4H (21 hari) dan range swing 1D (120 hari).'],
+['wait','Angka 21 hari, 120 hari, dan tebal kotak 0,5 ATR adalah pilihan saya.'],
+['ok','Monday Range: tunggu close Senin. Sweep Monday Low atau High lalu reclaim adalah pemicu.'],
+['ok','Double Deviation: sweep pertama lebih dalam, sweep kedua lebih dangkal, keduanya reclaim.'],
+['ok','Three Tap atau Three Top: 2 sentuhan di tepi range, lalu sweep dan reclaim.'],
+['ok','Wolf: breakout trendline yang gagal. Versi bullish adalah tafsiran saya.'],
+['ok','Breakout butuh acceptance, lalu retest. Breakdown yang gagal di-retest (failed reclaim) menjadi short.'],
+['wait','Acceptance saya definisikan 2 close atau lebih.'],
+['wait','Arah dari struktur harian (HH dan HL naik, LH dan LL turun). Sweep boleh melawan struktur, breakout dan retest zona tidak.'],
+['wait','Target: garis tengah, tepi range, lalu box HTF. Breakout memakai ukuran range.'],
+['wait','Konfirmasi 4H (retest tertahan). Batal bila close 12H melewati SL.'],
+['ok','SL ketat: scalping 3 sampai 5 persen, swing 10 sampai 15 persen.'],
+['wait','Spot dengan SL lebar (maksimal 30 persen) hanya bila target minimal 3 kali jarak SL, seperti contoh SUI dan NEAR.'],
+['ok','Ambil profit bertahap: sekitar 60 sampai 80 persen di target, sisakan sekitar 20 persen dengan stop di profit.'],
+['ok','Indikator hanya pelengkap (sekitar 5 persen), jadi tidak dipakai menyaring. Supertrend, Volume Profile, dan order book tidak dikodekan.'],
+['ok','Berita (FOMC) dianggap noise. Alert hanya peringatan. Libur dan volume tipis tetap diwaspadai.']];
+$('#rl').innerHTML=RULES.map(r=>`<li><span class="ch ${r[0]}">${r[0]=='ok'?'Dari Eliz':'Tafsiran'}</span> ${r[1]}</li>`).join('');
+
+$('#tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;[...$('#tabs').children].forEach(x=>x.classList.toggle('on',x==b));for(const s of document.querySelectorAll('section'))s.hidden=s.id!=='t-'+b.dataset.t};
+function showAl(){const A=[...alertList(),...extra];$('#al').innerHTML=A.map(a=>`<div class="al ${a[0]}">${a[1]}<small>${a[2]||''}</small></div>`).join('')}
+
+function chart(r,tf){const k4=tf=='4h',B=k4?r.ch4:r.ch1,fr=k4?r.f4:r.f1,off=k4?r.off4:r.off1;if(!fr)return'<p class="m">Data kurang untuk timeframe ini.</p>';
+ const W=640,Hh=250,n=B.length,bw=W/n,P=14,s=r.best&&r.best.tf===(k4?'4H':'1D')?r.best:null,Ls=[[fr.H,'range high','var(--mut)'],[fr.L,'range low','var(--mut)']];
+ if(fr.mon)Ls.push([fr.mon.h,'Monday high','#F9AB00'],[fr.mon.l,'Monday low','#F9AB00']);
+ if(s){Ls.push([s.entry,'entry','#4285F4'],[s.sl,'SL','#EA4335']);s.tg.forEach(t=>Ls.push([t.v,t.l.split(' ')[0],'#34A853']))}
+ const vs=[...B.map(q=>q.h),...B.map(q=>q.l),...Ls.map(a=>a[0])],mx=Math.max(...vs),mn=Math.min(...vs),y=v=>+(P+(mx-v)/(mx-mn)*(Hh-2*P)).toFixed(1);
+ let o=`<svg viewBox="0 0 ${W} ${Hh}" width="100%" role="img" aria-label="Grafik ${r.s} ${fr.tf}">`;
+ o+=`<rect x="0" y="${y(fr.H)}" width="${W}" height="${Math.max(2,y(fr.H-fr.bd)-y(fr.H))}" fill="#EA4335" opacity=".16"/><rect x="0" y="${y(fr.L+fr.bd)}" width="${W}" height="${Math.max(2,y(fr.L)-y(fr.L+fr.bd))}" fill="#34A853" opacity=".16"/>`;
+ o+=`<line x1="0" x2="${W}" y1="${y(fr.M)}" y2="${y(fr.M)}" stroke="var(--mut)" stroke-dasharray="2 4"/>`;
+ B.forEach((q,i)=>{const x=(i*bw+bw/2).toFixed(1),c=q.c>=q.o?'#34A853':'#EA4335';o+=`<line x1="${x}" x2="${x}" y1="${y(q.h)}" y2="${y(q.l)}" stroke="${c}"/><rect x="${(x-bw*.35).toFixed(1)}" y="${y(Math.max(q.o,q.c))}" width="${(bw*.7).toFixed(1)}" height="${Math.max(1,Math.abs(y(q.o)-y(q.c)))}" fill="${c}"/>`});
+ if(fr.tl){const T=fr.tl,a=Math.max(T.a,off),v=i=>T.av+T.sl*(i-T.a);o+=`<line x1="${((a-off+.5)*bw).toFixed(1)}" y1="${y(v(a))}" x2="${((T.e-off+.5)*bw).toFixed(1)}" y2="${y(v(T.e))}" stroke="#F9AB00" stroke-width="2"/>`}
+ for(const[v,t,c]of Ls)o+=`<line x1="0" x2="${W}" y1="${y(v)}" y2="${y(v)}" stroke="${c}" stroke-dasharray="5 3" opacity=".8"/><text x="4" y="${y(v)-3}" fill="${c}">${t} ${f(v)}</text>`;
+ return o+'</svg>'}
+
+function card(r){const s=r.best,cap=+$('#cap').value||0,rs=cap*(+$('#rk').value||0)/100,q=rs/s.risk,nt=q*s.entry,lev=cap?nt/cap:0;
+ const st=s.cf[0]=='ok'&&s.dist<=1.5?['Aktif','ok']:s.dist<=6?['Menunggu retest','wait']:['Jauh',''];
+ return `<article class="c" data-s="${r.s}"><div class="t"><h3>${r.s}</h3><span><span class="ch ${s.side==1?'L':'S'}">${s.side==1?'Long':'Short'}</span><span class="ch">${s.tf}, ${s.type}</span><span class="ch ${st[1]}">${st[0]}</span></span></div>
+<div class="g4"><div><span>Entry limit</span>${f(s.entry)}</div><div><span>SL ${s.slp.toFixed(1)}%</span>${f(s.sl)}</div><div><span>${s.tg[0].l.split(' ')[0]}</span>${f(s.tg[0].v)}</div><div><span>Rasio ke target akhir</span>${s.rr.toFixed(1)}R</div></div>
+<div class="m">${s.why}. Harga ${f(r.px)}, jarak ke entry ${s.dist.toFixed(1)}%.</div><div class="m">Konfirmasi: <span class="ch ${s.cf[0]}" style="margin:0">${s.cf[1]}</span></div>
+${s.w.length?`<div class="w">${s.w.join('. ')}</div>`:''}<div class="sz">Risiko $${rs.toFixed(0)}: qty ${q>=100?q.toFixed(0):q.toPrecision(3)} ${r.s}, nilai posisi $${nt.toFixed(0)}${lev>1.05?`, leverage setara ${lev.toFixed(1)}x`:''}</div></article>`}
+
+function renderSetups(){const L=all.filter(r=>r.best).filter(r=>flt=='all'||(flt=='a'?r.best.cf[0]=='ok'&&r.best.dist<=1.5:r.best.side==flt));
+ L.sort((a,b)=>b.best.sc-a.best.sc||a.best.dist-b.best.dist);
+ $('#setups').innerHTML=L.map(card).join('')||'<div class="c m">Belum ada setup yang lolos aturan. Diam juga posisi.</div>';
+ $('#top3').innerHTML=all.filter(r=>r.best).sort((a,b)=>b.best.sc-a.best.sc||a.best.dist-b.best.dist).slice(0,3).map(card).join('')||'<div class="c m">Belum ada setup. Tunggu pemicu di tepi range.</div>'}
+
+function renderHome(){const b=btc,fr=b.f4||b.f1;
+ const msg=fr.mid?'BTC di tengah range. Diam di BTC dan cari setup altcoin yang punya pemicu.':b.best?'BTC punya setup. Buka rencananya.':fr.pos<.2?'BTC dekat low range. Tunggu sweep lalu reclaim.':fr.pos>.8?'BTC dekat high range. Tunggu sweep atas, atau breakout dan retest.':'BTC belum memberi pemicu.';
+ $('#btcc').className='c';$('#btcc').dataset.s='BTC';
+ $('#btcc').innerHTML=`<div class="g4"><div><span>Harga BTC</span>${f(b.px)}</div><div><span>Range ${fr.tf}</span>${f(fr.L)} sampai ${f(fr.H)}</div><div><span>Posisi di range</span>${Math.round(fr.pos*100)}%</div><div><span>Struktur harian</span>${SD[b.bias+1]}</div></div><div>${msg}</div>${fr.mon?`<div class="m">Monday Range: ${f(fr.mon.l)} sampai ${f(fr.mon.h)}${fr.mon.done?'':' (belum selesai)'}</div>`:''}<div class="m">Ketuk untuk grafik dan rencana.</div>`}
+
+function renderWatch(){const A=[...all].sort((a,b)=>{const p=r=>{const fr=r.f4||r.f1;return Math.min(fr.pos,1-fr.pos)};return p(a)-p(b)});
+ $('#wt').innerHTML='<tr><th>Koin</th><th>Posisi di range</th><th>Pola</th><th>Status</th></tr>'+A.map(r=>{const fr=r.f4||r.f1,tg=[...(r.f4?.tags||[]),...(r.f1?.tags||[]).map(t=>t+' (1D)')];
+  return`<tr data-s="${r.s}"><td>${r.s}</td><td><div class="tr" title="${Math.round(fr.pos*100)}%"><i style="left:${Math.max(0,Math.min(100,fr.pos*100))}%"></i></div></td><td>${tg.join(', ')||'-'}</td><td>${r.st}</td></tr>`}).join('');
+ $('#dl').innerHTML=all.map(r=>`<option value="${r.s}">`).join('')}
+
+async function dom(){let g=null,eb=null;
+ try{g=(await (await fetch('https://api.coingecko.com/api/v3/global',{signal:AbortSignal.timeout(10000)})).json()).data.market_cap_percentage}catch(e){}
+ try{const c=(await kl('ETHBTC','1d',200)).map(q=>q.c);eb={r30:c.at(-1)/c.at(-31)-1}}catch(e){}
+ const al=all.filter(r=>r.s!=='BTC'&&r.s!=='ETH'),br=al.length?Math.round(al.filter(r=>r.ret30>btc.ret30).length/al.length*100):null;
+ const v=eb&&br!=null?(eb.r30>0&&br>=50?'Mengarah ke musim altcoin: ETH/BTC naik dan mayoritas altcoin mengungguli BTC.':eb.r30<0&&br<40?'BTC dominan: altcoin tertinggal dari BTC. Pilih altcoin hanya dengan pemicu jelas.':'Campuran: belum musim altcoin penuh.'):'Data belum lengkap.';
+ $('#domc').className='c';$('#domc').innerHTML=`<div class="g4"><div><span>Dominasi BTC</span>${g?g.btc.toFixed(1)+'%':'n/a'}</div><div><span>Dominasi ETH</span>${g?g.eth.toFixed(1)+'%':'n/a'}</div><div><span>ETH/BTC, 30 hari</span>${eb?(eb.r30*100).toFixed(1)+'%':'n/a'}</div><div><span>Altcoin mengungguli BTC (30 hari)</span>${br==null?'n/a':br+'%'}</div></div><div>${v}</div><div class="m">Kesimpulan ini tafsiran saya. Skenario Eliz: dominasi BTC ditolak di zona tinggi bersamaan BTC ditolak, lalu ETH naik, lalu altcoin.</div>`}
+
+const scen=r=>{const fr=r.f4||r.f1,A=fr.A,tf=fr.tf;return[
+ ['L','Sweep bawah, lalu long',`Jika harga menembus di bawah ${f(fr.L)} lalu close ${tf} kembali di atasnya, pasang limit di ${f(fr.L)}. SL di bawah wick sweep (kira-kira ${f(fr.L-1.25*A)}). Target: garis tengah ${f(fr.M)}, lalu ${f(fr.H)}.`],
+ ['S','Sweep atas, lalu short',`Jika harga menembus di atas ${f(fr.H)} lalu masuk lagi ke range, pasang limit di ${f(fr.H)}. SL di atas wick (kira-kira ${f(fr.H+1.25*A)}). Target: ${f(fr.M)}, lalu ${f(fr.L)}.`],
+ ['b','Breakout, retest, lalu long',`Jika 2 close ${tf} atau lebih di atas ${f(fr.H)} dan harga me-retest ${f(fr.H)} lalu bertahan, long di retest dengan SL di bawah retest. Tanpa itu, tidak ada trade.`]]};
+
+function open(r){cur=r;const s=r.best;
+ $('#dg').innerHTML=`<button class="x" aria-label="Tutup" onclick="document.querySelector('#dg').close()">×</button><h3>${r.s} <span class="ch">${r.st}</span></h3><div class="m">Harga ${f(r.px)}, struktur harian ${SD[r.bias+1]}</div>
+<div class="tf" id="tf"><button data-tf="4h" class="${tfv=='4h'?'on':''}">4H</button><button data-tf="1d" class="${tfv=='1d'?'on':''}">1D</button></div><div id="chw">${chart(r,tfv)}</div>
+<div class="m" style="margin-top:6px">Kotak hijau demand, kotak merah supply, garis putus-putus tengah range${(r.f4||{}).mon?', kuning Monday Range':''}.</div>
+${s?`<h2>Setup saat ini</h2>${card(r)}${r.setups.length>1?`<div class="m">Setup lain: ${r.setups.slice(1).map(x=>`${x.side==1?'long':'short'} ${x.tf} (${x.why})`).join('; ')}</div>`:''}`:''}
+<h2>Rencana jika-maka</h2>${scen(r).map(c=>`<div class="c"><span class="ch ${c[0]}">${c[1]}</span><div style="margin-top:6px">${c[2]}</div></div>`).join('')}`;
+ $('#dg').showModal()}
+$('#dg').onclick=e=>{const b=e.target.closest('button[data-tf]');if(b&&cur){tfv=b.dataset.tf;[...$('#tf').children].forEach(x=>x.classList.toggle('on',x==b));$('#chw').innerHTML=chart(cur,tfv)}else if(e.target===$('#dg'))$('#dg').close()};
+const pick=e=>{const t=e.target.closest('[data-s]');if(!t)return;const r=all.find(x=>x.s===t.dataset.s);if(r)open(r)};
+for(const id of['#btcc','#top3','#setups','#wt'])$(id).addEventListener('click',pick);
+$('#flt').onclick=e=>{const b=e.target.closest('button');if(!b)return;flt=b.dataset.f;[...$('#flt').children].forEach(x=>x.classList.toggle('on',x==b));renderSetups()};
+['cap','rk'].forEach(id=>$('#'+id).oninput=e=>{sv(id,e.target.value);renderSetups()});
+$('#sf').onsubmit=async e=>{e.preventDefault();const s=$('#q').value.trim().toUpperCase().replace(/USDT$/,'');if(!s)return;let r=all.find(x=>x.s===s);
+ if(!r){$('#st').textContent='Menganalisis '+s;try{const[d,h]=await Promise.all([kl(s+'USDT','1d',500),kl(s+'USDT','4h',300)]);r=analyze(s,d,h,{btcBias:btc?btc.bias:0,qv:1e9});$('#st').textContent=''}catch(x){$('#st').textContent='Koin '+s+' tidak ditemukan di Binance (USDT) atau datanya kurang.';return}}
+ open(r)};
+
+async function scan(){const b=$('#go');b.disabled=true;all=[];extra=[];$('#pg i').style.width='4%';$('#st').textContent='Mengambil daftar koin';
+ try{const t=await bj('ticker/24hr'),top=t.filter(x=>x.symbol.endsWith('USDT')&&!NOT.test(x.symbol.slice(0,-4))).sort((a,b)=>b.quoteVolume-a.quoteVolume).slice(0,40);
+  const get=async s=>{const[d,h]=await Promise.all([kl(s+'USDT','1d',500),kl(s+'USDT','4h',300)]);return{d,h}};
+  const bg=await get('BTC');btc=analyze('BTC',bg.d,bg.h,{qv:1e9});all.push(btc);
+  const v=bg.d.slice(-22,-2).map(q=>q.v),avg=v.reduce((a,b)=>a+b,0)/v.length;
+  if(bg.d.at(-2).v<.6*avg)extra.push(['y','Volume BTC kemarin di bawah 60% rata-rata 20 hari.','Volume tipis']);
+  if((btc.f4||btc.f1).mid)extra.push(['b','BTC di tengah range. Diam di BTC, cari altcoin yang punya pemicu.','Sikap Eliz: tanpa pemicu, tidak ada trade di BTC']);
+  showAl();renderHome();
+  const rest=top.filter(x=>x.symbol!=='BTCUSDT');
+  for(let i=0;i<rest.length;i+=6){$('#st').textContent=`Memindai ${Math.min(i+6,rest.length)} dari ${rest.length} koin`;$('#pg i').style.width=(10+Math.min(i+6,rest.length)/rest.length*90)+'%';
+   await Promise.all(rest.slice(i,i+6).map(async x=>{const s=x.symbol.slice(0,-4);try{const g=await get(s);all.push(analyze(s,g.d,g.h,{btcBias:btc.bias,qv:+x.quoteVolume}))}catch(e){}}))}
+  renderSetups();renderWatch();await dom();
+  $('#st').textContent=`Selesai: ${all.filter(r=>r.best).length} koin punya setup, ${all.length} koin dipantau.`;
+ }catch(e){$('#st').textContent='Semua server Binance gagal dijangkau ('+(e&&e.name==='TimeoutError'?'timeout':e&&e.message)+'). Coba ganti jaringan atau VPN.'}
+ $('#pg i').style.width='100%';b.disabled=false}
+$('#go').onclick=scan;showAl();scan();
+</script></body></html>
