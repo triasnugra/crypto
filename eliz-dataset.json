@@ -2,13 +2,14 @@
 "meta": {
 "sumber": "PDF 1: Analisis dan hasil analisis dari eliz883",
 "zona_waktu": "WIB (+07:00)",
-"versi": 2,
+"versi": 3,
 "catatan": [
 "src 'teks' = angka disebut di teks post. 'chart' = label harga di sumbu chart. 'chart~' = perkiraan dari posisi pixel, toleransi sekitar 2 persen.",
 "cls: setup = ada pemicu atau level dan arah. bias = arah saja. notrade = Eliz diam. scenario = dua arah atau level saja. invest = spot jangka panjang. context = tanpa teks.",
 "Level dengan role berawalan 'target' tidak ikut penilaian level (hanya info).",
 "pxShown = harga di chart post. Dipakai untuk mengecek apakah tanggal dan jam di dataset cocok dengan data Binance.",
-"Dataset berisi post pilihan Eliz sendiri (cenderung yang berhasil). Cocok untuk mengecek apakah engine melihat yang dia lihat, bukan untuk membuktikan profit."
+"Dataset berisi post pilihan Eliz sendiri (cenderung yang berhasil). Cocok untuk mengecek apakah engine melihat yang dia lihat, bukan untuk membuktikan profit.",
+"Entri SUI, NEAR, BTC-0916 berasal dari Discord Eliz, bukan dari PDF 1. NEAR ditulis akun asisten. Klaim kind=close menilai apakah ada close (1D, 1W) melewati level, dan selalu bersyarat."
 ]
 },
 "entries": [
@@ -806,6 +807,197 @@
 "flags": [
 "Aritmetika kartu masuk akal: +3,37% x 15 sekitar 50 persen setelah biaya.",
 "Entry kartu sedikit di atas harga chart post: entry sebelum post."
+]
+},
+{
+"id": "SUI-0917",
+"sym": "SUI",
+"ts": "2026-09-17T12:00:00+07:00",
+"probe": [
+"2026-09-17T00:00:00+07:00",
+"2026-09-18T00:00:00+07:00"
+],
+"cls": "setup",
+"dir": 1,
+"tf": "1D",
+"pxShown": 0.8122,
+"levels": [
+{
+"v": 0.81,
+"role": "reclaim (teks)",
+"src": "teks"
+},
+{
+"v": 1.03,
+"role": "konfirmasi: break bersih (teks)",
+"src": "teks"
+},
+{
+"v": 0.63,
+"role": "invalidasi (teks)",
+"src": "teks"
+},
+{
+"v": 2.46,
+"role": "target (teks)",
+"src": "teks"
+}
+],
+"zones": [
+{
+"lo": 0.75,
+"hi": 0.8,
+"role": "demand yang harus bertahan (teks)",
+"src": "teks"
+}
+],
+"pat": [
+"sweep-reclaim",
+"retest-zone"
+],
+"note": "Setup asimetris berisiko tinggi: tahan 0,75-0,80 dan reclaim 0,81; break bersih di atas 1,03 membuka jalan ke 2,46; di bawah 0,63 invalid. Bottom di sini untuk gerakan besar, atau nol.",
+"horizonDays": 40,
+"claims": [
+{
+"text": "Ada close harian di bawah 0,63 (invalidasi)",
+"kind": "close",
+"tf": "1D",
+"level": 0.63,
+"dir": -1
+},
+{
+"text": "Ada close harian di atas 1,03 (konfirmasi)",
+"kind": "close",
+"tf": "1D",
+"level": 1.03,
+"dir": 1
+},
+{
+"text": "Target 2,46 tercapai",
+"level": 2.46,
+"dir": 1,
+"conditional": true,
+"by": "2026-12-31T00:00:00+07:00"
+}
+],
+"flags": [
+"Tanggal post 26 Sep 2026, tetapi chart bertanggal 17 Sep 2026. Jam analisis diestimasi dari harga chart (0,8122) pada 17 Sep; kalau harga itu muncul beberapa kali hari itu, jam bisa meleset.",
+"Alat posisi di chart: entry sekitar 0,7947, stop 0,6323, target 2,4621 (sekitar 10R). Eliz sendiri menyebut ini bukan setup biasa: berhasil besar atau nol.",
+"Kategori asimetris (seperti TAO): jangan dibandingkan dengan setup scalping."
+]
+},
+{
+"id": "NEAR-0901",
+"sym": "NEAR",
+"ts": "2026-09-01T15:10:00+07:00",
+"cls": "setup",
+"dir": 1,
+"tf": "1D",
+"levels": [
+{
+"v": 2.57,
+"role": "konfirmasi: close harian kuat di atas (teks)",
+"src": "teks"
+},
+{
+"v": 1.53,
+"role": "invalidasi: close harian di bawah (teks)",
+"src": "teks"
+},
+{
+"v": 6.3,
+"role": "target makro (teks)",
+"src": "teks"
+}
+],
+"zones": [
+{
+"lo": 1.81,
+"hi": 1.96,
+"role": "zona reclaim (teks)",
+"src": "teks"
+}
+],
+"pat": [
+"sweep-reclaim",
+"retest-zone"
+],
+"note": "Daily: deviasi di bawah support, sweep likuiditas low, reclaim cepat; kini konsolidasi di atas 1,81-1,96 mengubah resistance lama jadi support. Invalidasi: close harian di bawah 1,53.",
+"horizonDays": 40,
+"claims": [
+{
+"text": "Ada close harian di bawah 1,53 (invalidasi)",
+"kind": "close",
+"tf": "1D",
+"level": 1.53,
+"dir": -1
+},
+{
+"text": "Ada close harian di atas 2,57 (konfirmasi)",
+"kind": "close",
+"tf": "1D",
+"level": 2.57,
+"dir": 1
+},
+{
+"text": "Target makro 6,30 tercapai",
+"level": 6.3,
+"dir": 1,
+"conditional": true,
+"by": "2026-12-31T00:00:00+07:00"
+}
+],
+"flags": [
+"Penulis post adalah Tyborg | Eliz Assistant, akun asisten, bukan Eliz sendiri. Tidak ada chart di screenshot, jadi harga saat post tidak diketahui dan jam tidak bisa diverifikasi.",
+"Zona waktu stempel Discord diasumsikan WIB; untuk setup harian selisih beberapa jam tidak berarti banyak.",
+"Deviasi wick di bawah 1,95 atau ke 1,81 disebut tidak membatalkan setup selama harga cepat reclaim: invalidasi berbasis close, bukan wick."
+]
+},
+{
+"id": "BTC-0916",
+"sym": "BTC",
+"ts": "2026-09-16T14:36:00+07:00",
+"cls": "bias",
+"dir": 1,
+"tf": "1W",
+"levels": [
+{
+"v": 65000,
+"role": "invalidasi: breakdown terkonfirmasi di bawah (teks)",
+"src": "teks"
+}
+],
+"zones": [
+{
+"lo": 65000,
+"hi": 68000,
+"role": "zona weekly makro (teks)",
+"src": "teks"
+}
+],
+"pat": [
+"htf-zone"
+],
+"note": "Struktur makro BTC tetap bullish selama weekly bertahan di atas 65K-68K; setiap koreksi adalah peluang beli. Invalidasi: breakdown terkonfirmasi di bawah 65K. Fokus pada level, bukan sentimen.",
+"horizonDays": 40,
+"claims": [
+{
+"text": "Ada close weekly di bawah 65K (invalidasi)",
+"kind": "close",
+"tf": "1W",
+"level": 65000,
+"dir": -1
+},
+{
+"text": "Ada close harian di bawah 65K (info)",
+"kind": "close",
+"tf": "1D",
+"level": 65000,
+"dir": -1
+}
+],
+"flags": [
+"Post oleh Eliz sendiri (16/09/2026 14:36 menurut stempel Discord). Tanpa chart, jadi harga saat post tidak bisa dicek."
 ]
 }
 ]

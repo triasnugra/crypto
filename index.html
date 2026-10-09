@@ -1,56 +1,65 @@
 <!DOCTYPE html>
 <html lang="id"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#4285F4">
+<meta name="theme-color" content="#242526">
 <title>asgracrypto</title>
 <style>
-:root{--bg:#fff;--s:#f8f9fa;--tx:#202124;--mut:#5f6368;--ln:#dadce0;--b:#4285F4;--r:#EA4335;--y:#FBBC04;--g:#34A853;--bl:#e8f0fe;--gl:#e6f4ea;--rl:#fce8e6;--yl:#fef7e0;--yt:#8a5a00}
-@media(prefers-color-scheme:dark){:root{--bg:#202124;--s:#2d2e31;--tx:#e8eaed;--mut:#9aa0a6;--ln:#3c4043;--bl:#1c2b46;--gl:#17301f;--rl:#3b1f1d;--yl:#3a3012;--yt:#fdd663}}
+:root{color-scheme:dark;--bg:#18191A;--s:#242526;--s2:#3A3B3C;--tx:#E4E6EB;--mut:#B0B3B8;--ln:#3E4042;--b:#4599FF;--bb:#0866FF;--r:#F3425F;--y:#F7B928;--g:#45BD62;--bl:rgba(45,136,255,.18);--gl:rgba(69,189,98,.16);--rl:rgba(243,66,95,.16);--yl:rgba(247,185,40,.16);--yt:#F7B928;--pad:max(16px,calc((100% - 760px)/2))}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.55 "Google Sans",Roboto,"Segoe UI",system-ui,sans-serif}
-header,main{max-width:800px;margin:0 auto;padding:0 16px}
-header{padding-top:18px;display:flex;flex-direction:column;gap:12px;align-items:center}
-h1{margin:0;font-size:34px;font-weight:500;letter-spacing:-.5px}
-#sf{width:100%}
-#q{width:100%;border:1px solid var(--ln);border-radius:99px;padding:12px 20px;font:inherit;background:var(--bg);color:var(--tx)}
-#q:focus{outline:0;border-color:transparent;box-shadow:0 1px 6px rgba(66,133,244,.45)}
-nav{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--ln);display:flex;justify-content:center;margin-top:10px;overflow-x:auto}
-nav button{background:none;border:0;padding:13px 18px;font:inherit;color:var(--mut);border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap}
-nav button.on{color:var(--b);border-color:var(--b);font-weight:500}
-h2{font-size:18px;font-weight:500;margin:26px 0 10px}h3{font-size:16px;font-weight:500;margin:0}
-.al{padding:10px 14px;border-radius:12px;margin-top:10px;font-size:14px}.al small{display:block;color:var(--mut)}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.45 "Segoe UI Historic","Segoe UI",Helvetica,Arial,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+header{position:sticky;top:0;z-index:20;height:56px;display:flex;align-items:center;gap:12px;padding:0 var(--pad);background:var(--s);border-bottom:1px solid var(--ln)}
+main{max-width:760px;margin:0 auto;padding:0 16px}
+h1{margin:0;font-size:22px;font-weight:700;letter-spacing:-.3px;display:flex;align-items:center;gap:10px;flex:none}
+.lg{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#0866FF,#00B2FF);display:grid;place-items:center}
+#sf{flex:1;max-width:340px;margin-left:auto}
+#q{width:100%;height:40px;border:0;border-radius:99px;padding:0 16px 0 42px;font:inherit;background:var(--s2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23B0B3B8' stroke-width='2.4' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M20 20l-4-4'/%3E%3C/svg%3E") 14px center no-repeat;color:var(--tx)}
+#q::placeholder{color:var(--mut)}
+nav{position:sticky;top:56px;z-index:19;background:var(--s);border-bottom:1px solid var(--ln);display:flex;justify-content:center;gap:4px;padding:0 var(--pad);overflow-x:auto;box-shadow:0 2px 4px rgba(0,0,0,.25)}
+nav button{display:flex;align-items:center;gap:8px;background:none;border:0;border-bottom:3px solid transparent;height:50px;padding:0 20px;font:inherit;font-weight:600;color:var(--mut);cursor:pointer;white-space:nowrap}
+nav button:hover{background:var(--s2);border-radius:8px 8px 0 0}
+nav button.on{color:var(--b);border-bottom-color:var(--b)}
+.ic{width:22px;height:22px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;background:none;border-radius:0}
+h2{font-size:20px;font-weight:700;margin:24px 0 10px}h3{font-size:17px;font-weight:600;margin:0}
+.al{padding:12px 16px;border-radius:12px;margin-top:12px;font-size:14px}.al small{display:block;color:var(--mut)}
 .al.r{background:var(--rl)}.al.y{background:var(--yl)}.al.g{background:var(--gl)}.al.b{background:var(--bl)}
-.c{border:1px solid var(--ln);border-radius:16px;padding:14px 16px;margin:10px 0;background:var(--bg)}
-.c[data-s]{cursor:pointer}.c[data-s]:hover{box-shadow:0 1px 3px rgba(60,64,67,.3)}
-.t{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}
-.ch{display:inline-block;font-size:12px;padding:2px 10px;border-radius:99px;background:var(--s);color:var(--mut);margin-left:4px}
+.c{background:var(--s);border-radius:12px;padding:16px;margin:12px 0;box-shadow:0 1px 2px rgba(0,0,0,.35)}
+.c[data-s]{cursor:pointer;transition:background .15s}.c[data-s]:hover{background:#2D2E30}
+.t{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
+.ch{display:inline-block;font-size:12px;font-weight:600;padding:3px 10px;border-radius:99px;background:var(--s2);color:var(--mut);margin-left:4px}
 .ch.L,.ch.ok{background:var(--gl);color:var(--g)}.ch.S{background:var(--rl);color:var(--r)}.ch.wait{background:var(--yl);color:var(--yt)}.ch.b{background:var(--bl);color:var(--b)}
-.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:8px 0}.g4 span{display:block;color:var(--mut);font-size:12px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:8px 0}.g4>div{background:var(--bg);border-radius:8px;padding:10px 12px;font-size:17px;font-weight:600;line-height:1.25}.g4 span{display:block;color:var(--mut);font-size:12px;font-weight:400;margin-bottom:2px}
 .m{color:var(--mut);font-size:13px}.w{color:var(--yt);font-size:13px}
-.sz{margin-top:8px;padding:8px 12px;background:var(--s);border-radius:10px;font-size:13px}
-button.p{background:var(--b);color:#fff;border:0;border-radius:99px;padding:9px 20px;font:inherit;cursor:pointer}button.p:disabled{opacity:.5}
-.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin:8px 0}
-.bar label{font-size:12px;color:var(--mut);display:flex;flex-direction:column;gap:3px}
-.bar input{width:96px;border:1px solid var(--ln);border-radius:10px;padding:8px 10px;font:inherit;background:var(--bg);color:var(--tx)}
-.fl button{border:1px solid var(--ln);background:var(--bg);color:var(--tx);border-radius:99px;padding:7px 14px;font:inherit;cursor:pointer;margin-right:6px}
-.fl button.on{background:var(--bl);border-color:var(--b);color:var(--b)}
-#pg{height:3px;background:var(--ln);border-radius:2px;overflow:hidden;margin:10px 0 4px}#pg i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--b),var(--r),var(--y),var(--g));transition:width .3s}
-.sc{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px}
-th,td{padding:10px 8px;border-bottom:1px solid var(--ln);text-align:left;white-space:nowrap}th{color:var(--mut);font-weight:500}tr[data-s]{cursor:pointer}tr[data-s]:hover{background:var(--s)}
-.tr{position:relative;width:90px;height:6px;border-radius:3px;background:linear-gradient(90deg,var(--g),var(--ln) 30%,var(--ln) 70%,var(--r))}.tr i{position:absolute;top:-3px;width:12px;height:12px;border-radius:50%;background:var(--tx);margin-left:-6px}
-dialog{width:min(720px,96vw);max-height:92vh;border:0;border-radius:24px;padding:18px;background:var(--bg);color:var(--tx)}
-dialog::backdrop{background:rgba(32,33,36,.55)}
-.x{float:right;background:var(--s);border:0;border-radius:50%;width:34px;height:34px;font-size:20px;cursor:pointer;color:var(--tx)}
-.tf{margin:8px 0}.tf button{border:1px solid var(--ln);background:var(--bg);color:var(--tx);border-radius:99px;padding:5px 14px;font:inherit;cursor:pointer;margin-right:6px}.tf button.on{background:var(--bl);border-color:var(--b);color:var(--b)}
-svg{display:block;border-radius:12px;background:var(--s)}svg text{font:10px "Google Sans",Roboto,system-ui,sans-serif}
-li{margin:8px 0}
+.sz{margin-top:8px;padding:10px 12px;background:var(--bg);border-radius:8px;font-size:13px}
+button.p{background:var(--bb);color:#fff;border:0;border-radius:8px;height:40px;padding:0 20px;font:inherit;font-weight:600;cursor:pointer;transition:filter .15s}button.p:hover{filter:brightness(1.12)}button.p:disabled{opacity:.45;cursor:default;filter:none}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin:14px 0 8px}
+.bar label{font-size:12px;color:var(--mut);display:flex;flex-direction:column;gap:4px}
+.bar input{width:104px;height:40px;border:0;border-radius:8px;padding:0 12px;font:inherit;background:var(--s2);color:var(--tx)}
+.fl button,.tf button{border:0;background:var(--s2);color:var(--tx);border-radius:99px;height:36px;padding:0 16px;font:inherit;font-weight:600;cursor:pointer;margin:0 6px 6px 0}
+.fl button:hover,.tf button:hover{background:#4E4F50}.fl button.on,.tf button.on{background:var(--bl);color:var(--b)}
+#pg{height:3px;background:var(--ln);border-radius:2px;overflow:hidden;margin:8px 0 4px}#pg i{display:block;height:100%;width:0;background:linear-gradient(90deg,#0866FF,#00B2FF);transition:width .3s}
+.sc{overflow-x:auto;background:var(--s);border-radius:12px;padding:4px 8px}table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{padding:12px 8px;border-bottom:1px solid var(--ln);text-align:left;white-space:nowrap}th{color:var(--mut);font-weight:600;font-size:13px}tr:last-child td{border-bottom:0}tr[data-s]{cursor:pointer}tr[data-s]:hover{background:var(--s2)}
+.tr{position:relative;width:90px;height:6px;border-radius:3px;background:linear-gradient(90deg,var(--g),var(--s2) 30%,var(--s2) 70%,var(--r))}.tr i{position:absolute;top:-3px;width:12px;height:12px;border-radius:50%;background:var(--tx);margin-left:-6px}
+dialog{width:min(720px,96vw);max-height:92vh;border:0;border-radius:16px;padding:20px;background:var(--s);color:var(--tx);box-shadow:0 12px 28px rgba(0,0,0,.6)}
+dialog::backdrop{background:rgba(0,0,0,.65)}
+.x{float:right;background:var(--s2);border:0;border-radius:50%;width:36px;height:36px;font-size:20px;cursor:pointer;color:var(--tx)}.x:hover{background:#4E4F50}
+.tf{margin:8px 0}
+svg:not(.ic){display:block;border-radius:8px;background:var(--bg)}svg text{font:10px "Segoe UI",Helvetica,Arial,system-ui,sans-serif}
+li{margin:8px 0}a{color:var(--b)}
 :focus-visible{outline:2px solid var(--b);outline-offset:2px}
-footer{max-width:800px;margin:30px auto;padding:0 16px;color:var(--mut);font-size:12px}
-@media(max-width:520px){.g4{grid-template-columns:repeat(2,1fr)}h1{font-size:28px}}
+footer{max-width:760px;margin:30px auto;padding:0 16px;color:var(--mut);font-size:12px}
+@media(max-width:640px){
+ .g4{grid-template-columns:repeat(2,1fr)}h1 span.nm{display:none}#sf{max-width:none}
+ nav{position:fixed;top:auto;bottom:0;left:0;right:0;justify-content:space-around;gap:0;padding:0 0 env(safe-area-inset-bottom);border-bottom:0;border-top:1px solid var(--ln);box-shadow:0 -2px 6px rgba(0,0,0,.3)}
+ nav button{flex:1;flex-direction:column;gap:2px;height:58px;padding:6px 2px;font-size:11px;border-bottom:0;border-top:3px solid transparent;justify-content:center}
+ nav button:hover{border-radius:0}nav button.on{border-top-color:var(--b)}
+ body{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style></head><body>
 <header><h1 id="wm" aria-label="asgracrypto"></h1>
 <form id="sf"><input id="q" list="dl" placeholder="Cari koin, contoh: BTC atau SOL" autocomplete="off" enterkeyhint="search"><datalist id="dl"></datalist></form></header>
-<nav id="tabs"><button data-t="home" class="on">Ringkasan</button><button data-t="setup">Setup</button><button data-t="watch">Pantauan</button><button data-t="rule">Strategi</button><button data-t="uji">Uji</button></nav>
+<nav id="tabs"><button data-t="home" class="on"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Ringkasan</button><button data-t="setup"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></svg>Setup</button><button data-t="watch"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>Pantauan</button><button data-t="rule"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v16H7a2 2 0 0 1-2-2z"/><path d="M9 8h6M9 12h6"/></svg>Strategi</button><button data-t="uji"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-9V3"/></svg>Uji</button></nav>
 <main>
 <div id="al"></div>
 <div class="bar"><button class="p" id="go">Pindai ulang</button><span id="st" class="m"></span></div><div id="pg"><i></i></div>
@@ -92,7 +101,7 @@ import * as VALNS from './validate.mjs'; // hanya untuk menampilkan versi; aman 
 const $=s=>document.querySelector(s),SD=['turun','datar','naik'];
 const ld=k=>{try{return localStorage.getItem(k)}catch(e){return null}},sv=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
 let all=[],btc=null,flt='all',extra=[],cur=null,tfv='4h';
-$('#wm').innerHTML=[...'asgracrypto'].map((c,i)=>`<span style="color:var(--${'bryg'[i%4]})">${c}</span>`).join('');
+$('#wm').innerHTML='<span class="lg"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="stroke:#fff;stroke-width:3;width:20px;height:20px"><path d="M5 18v-6M12 18V6M19 18V9"/></svg></span><span class="nm">asgracrypto</span>';
 $('#cap').value=ld('cap')||1000;$('#rk').value=ld('rk')||1;
 
 const RULES=[['ok','Tanpa pemicu, tanpa trade. Tengah range adalah zona tanpa trade, dan tidak mengejar harga.'],
@@ -120,14 +129,14 @@ function showAl(){const A=[...alertList(),...extra];$('#al').innerHTML=A.map(a=>
 
 function chart(r,tf){const k4=tf=='4h',B=k4?r.ch4:r.ch1,fr=k4?r.f4:r.f1,off=k4?r.off4:r.off1;if(!fr)return'<p class="m">Data kurang untuk timeframe ini.</p>';
  const W=640,Hh=250,n=B.length,bw=W/n,P=14,s=r.best&&r.best.tf===(k4?'4H':'1D')?r.best:null,Ls=[[fr.H,'range high','var(--mut)'],[fr.L,'range low','var(--mut)']];
- if(fr.mon)Ls.push([fr.mon.h,'Monday high','#F9AB00'],[fr.mon.l,'Monday low','#F9AB00']);
- if(s){Ls.push([s.entry,'entry','#4285F4'],[s.sl,'SL','#EA4335']);s.tg.forEach(t=>Ls.push([t.v,t.l.split(' ')[0],'#34A853']))}
+ if(fr.mon)Ls.push([fr.mon.h,'Monday high','#F7B928'],[fr.mon.l,'Monday low','#F7B928']);
+ if(s){Ls.push([s.entry,'entry','#4599FF'],[s.sl,'SL','#F3425F']);s.tg.forEach(t=>Ls.push([t.v,t.l.split(' ')[0],'#45BD62']))}
  const vs=[...B.map(q=>q.h),...B.map(q=>q.l),...Ls.map(a=>a[0])],mx=Math.max(...vs),mn=Math.min(...vs),y=v=>+(P+(mx-v)/(mx-mn)*(Hh-2*P)).toFixed(1);
  let o=`<svg viewBox="0 0 ${W} ${Hh}" width="100%" role="img" aria-label="Grafik ${r.s} ${fr.tf}">`;
- o+=`<rect x="0" y="${y(fr.H)}" width="${W}" height="${Math.max(2,y(fr.H-fr.bd)-y(fr.H))}" fill="#EA4335" opacity=".16"/><rect x="0" y="${y(fr.L+fr.bd)}" width="${W}" height="${Math.max(2,y(fr.L)-y(fr.L+fr.bd))}" fill="#34A853" opacity=".16"/>`;
+ o+=`<rect x="0" y="${y(fr.H)}" width="${W}" height="${Math.max(2,y(fr.H-fr.bd)-y(fr.H))}" fill="#F3425F" opacity=".16"/><rect x="0" y="${y(fr.L+fr.bd)}" width="${W}" height="${Math.max(2,y(fr.L)-y(fr.L+fr.bd))}" fill="#45BD62" opacity=".16"/>`;
  o+=`<line x1="0" x2="${W}" y1="${y(fr.M)}" y2="${y(fr.M)}" stroke="var(--mut)" stroke-dasharray="2 4"/>`;
- B.forEach((q,i)=>{const x=(i*bw+bw/2).toFixed(1),c=q.c>=q.o?'#34A853':'#EA4335';o+=`<line x1="${x}" x2="${x}" y1="${y(q.h)}" y2="${y(q.l)}" stroke="${c}"/><rect x="${(x-bw*.35).toFixed(1)}" y="${y(Math.max(q.o,q.c))}" width="${(bw*.7).toFixed(1)}" height="${Math.max(1,Math.abs(y(q.o)-y(q.c)))}" fill="${c}"/>`});
- if(fr.tl){const T=fr.tl,a=Math.max(T.a,off),v=i=>T.av+T.sl*(i-T.a);o+=`<line x1="${((a-off+.5)*bw).toFixed(1)}" y1="${y(v(a))}" x2="${((T.e-off+.5)*bw).toFixed(1)}" y2="${y(v(T.e))}" stroke="#F9AB00" stroke-width="2"/>`}
+ B.forEach((q,i)=>{const x=(i*bw+bw/2).toFixed(1),c=q.c>=q.o?'#45BD62':'#F3425F';o+=`<line x1="${x}" x2="${x}" y1="${y(q.h)}" y2="${y(q.l)}" stroke="${c}"/><rect x="${(x-bw*.35).toFixed(1)}" y="${y(Math.max(q.o,q.c))}" width="${(bw*.7).toFixed(1)}" height="${Math.max(1,Math.abs(y(q.o)-y(q.c)))}" fill="${c}"/>`});
+ if(fr.tl){const T=fr.tl,a=Math.max(T.a,off),v=i=>T.av+T.sl*(i-T.a);o+=`<line x1="${((a-off+.5)*bw).toFixed(1)}" y1="${y(v(a))}" x2="${((T.e-off+.5)*bw).toFixed(1)}" y2="${y(v(T.e))}" stroke="#F7B928" stroke-width="2"/>`}
  for(const[v,t,c]of Ls)o+=`<line x1="0" x2="${W}" y1="${y(v)}" y2="${y(v)}" stroke="${c}" stroke-dasharray="5 3" opacity=".8"/><text x="4" y="${y(v)-3}" fill="${c}">${t} ${f(v)}</text>`;
  return o+'</svg>'}
 
@@ -200,21 +209,22 @@ async function scan(){const b=$('#go');b.disabled=true;all=[];extra=[];$('#pg i'
 let uj=null,ds0=null,ujBl=null;
 const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 const VC={sama:'ok',sebagian:'wait',beda:'S',berlawanan:'S','tidak terdeteksi':'S',dilewati:''};
+const nn=x=>x==null?'n/a':x;
+const sm=x=>x?`${x.st}, ${x.R.toFixed(2)}R`:'-';
 const ujCard=x=>{if(x.error)return`<div class="c"><div class="t"><h3>${x.id}</h3><span class="ch wait">${x.optional?'tidak tersedia':'error'}</span></div><div class="m">${esc(x.error)}</div></div>`;
- const b=x.engine.best,cl=(x.claims||[]).map(c=>`<div class="m">Klaim${c.info?' (info)':c.conditional?' (bersyarat)':''}: ${esc(c.text)}: <b>${c.verdict}</b>, capaian maks ${c.ach}%</div>`).join(''),
- fl=[...x.flags,...(x.tsSuspect?[`Harga chart ${x.pxShown} vs Binance ${f(x.px)} (${x.pxDiff}%): waktu atau sumber mungkin salah`]:[]),...(x.result&&x.result.tsSuspect?[`Harga di post hasil ${x.result.pxShown} vs Binance ${f(x.result.pxActual)} (${x.result.pxDiff}%): waktu post hasil mungkin salah${x.result.altDiff!=null?`; terhadap tanggal di chart selisih ${x.result.altDiff}%`:''}`]:[])];
- return`<article class="c"><div class="t"><h3>${x.id}</h3><span><span class="ch">${x.cls}${x.dir?x.dir>0?' long':' short':''}</span>${x.v1&&x.v1.grade.verdict!==x.grade.verdict?`<span class="ch">v1: ${x.v1.grade.verdict}</span>`:''}${x.v2t&&x.v2t.grade.verdict!==x.grade.verdict?`<span class="ch">v2t: ${x.v2t.grade.verdict}</span>`:''}<span class="ch ${VC[x.grade.verdict]}">${x.grade.verdict}</span></span></div>
+ const b=x.engine.best,cl=(x.claims||[]).map(c=>`<div class="m">Klaim${c.info?' (info)':c.conditional?' (bersyarat)':''}: ${esc(c.text)}: <b>${c.verdict}</b>${c.at?' pada '+c.at.slice(0,10):''}${c.ach!=null?', capaian maks '+c.ach+'%':''}</div>`).join(''),
+ fl=[...x.flags,...(x.tsEst?[`Jam analisis diestimasi dari harga chart: ${x.tsEst.slice(0,16).replace('T',' ')} UTC (selisih harga ${x.tsEstDiff}%)`]:[]),...(x.tsSuspect?[`Harga chart ${x.pxShown} vs Binance ${f(x.px)} (${x.pxDiff}%): waktu atau sumber mungkin salah`]:[]),...(x.result&&x.result.tsSuspect?[`Harga di post hasil ${x.result.pxShown} vs Binance ${f(x.result.pxActual)} (${x.result.pxDiff}%): waktu post hasil mungkin salah${x.result.altDiff!=null?`; terhadap tanggal di chart selisih ${x.result.altDiff}%`:''}`]:[])];
+ return`<article class="c"><div class="t"><h3>${x.id}</h3><span><span class="ch">${x.cls}${x.dir?x.dir>0?' long':' short':''}</span><span class="ch ${VC[x.grade.verdict]}">${x.grade.verdict}</span></span></div>
 <div class="m">Eliz: ${esc(x.note)}</div><div class="m">Engine: ${b?`${b.side>0?'long':'short'} ${b.tf}, ${esc(b.why)}, entry ${f(b.entry)}, SL ${f(b.sl)}, ${b.rr.toFixed(1)}R`:esc(x.engine.st)}. ${esc(x.grade.note)}.</div>
 ${x.levels&&x.levels.total?`<div class="m">Level cocok: ${x.levels.hit} dari ${x.levels.total}${x.levels.miss.length?'. Meleset: '+esc(x.levels.miss.join('; ')):''}</div>`:''}${cl}
-${x.sim?`<div class="m">Simulasi plan engine: ${x.sim.st}, ${x.sim.R.toFixed(2)}R</div>`:''}${fl.map(t=>`<div class="w">${esc(t)}</div>`).join('')}</article>`};
-const nn=x=>x==null?'n/a':x;
-const sl=(s,t)=>`${t}: skor ${s.skor==null?'n/a':s.skor+'%'} (sama ${s.sama}, sebagian ${s.sebagian}, beda ${s.beda}), level ${s.levelHit} dari ${s.levelTotal}. Plan engine: ${s.sim.setup} setup, ${s.sim.terisi} terisi, ${s.sim.win} menang, rata-rata ${nn(s.sim.avgR)}R, median ${nn(s.sim.medR)}R, tanpa trade terbaik ${nn(s.sim.tanpaTerbaik)}R.`;
-const bs=(x,t)=>`${t}: ${x.setup} setup, ${x.terisi} terisi, ${x.win} menang, rata-rata ${nn(x.avgR)}R, median ${nn(x.medR)}R, tanpa terbaik ${nn(x.tanpaTerbaik)}R.`;
-const ujSum=()=>{const s=summarize(uj.res),b=ujBl,pc=v=>v==null?'n/a':v+'%';$('#ujsum').innerHTML=`<div class="c"><div class="g4"><div><span>Skor v1 (lama)</span>${pc(s.v1.skor)}</div><div><span>Skor v2 (tlb mati)</span>${pc(s.skor)}</div><div><span>Skor v2t (tlb aktif)</span>${pc(s.v2t.skor)}</div><div><span>Klaim Eliz terverifikasi</span>${s.klaimOk} dari ${s.klaimTotal}</div></div>
-<div class="m">${sl(s.v1,'v1 (lama)')}</div><div class="m">${sl(s,'v2 (tlb mati)')}</div><div class="m">${sl(s.v2t,'v2t (tlb aktif, retest dan jarak diperketat)')}</div>
-${b?`<div class="m">Pembanding acak, ${b.n} sampel (jam sembarang, koin yang sama). ${bs(b.v1,'v1')} ${bs(b.v2,'v2')} ${bs(b.v2t,'v2t')}</div><div class="m">Hanya pada ${b.beda.n} sampel yang setup-nya berbeda antar versi: ${bs(b.beda.v1,'v1')} ${bs(b.beda.v2,'v2')} ${bs(b.beda.v2t,'v2t')}</div>`:''}
-<div class="m">Terpasang: harness ${VALNS.VERSION||'LAMA (perbarui validate.mjs)'}, dataset v${ds0&&ds0.meta?ds0.meta.versi:'?'} dengan ${ds0?ds0.entries.length:'?'} entri. Dataset terbaru: v2, 21 entri, 18 dinilai.</div>
-<div class="m">Satu trade besar menggeser rata-rata. Lihat median dan "tanpa trade terbaik", dan jangan menyimpulkan dari selisih kecil.</div>
+${x.sim?`<div class="m">Simulasi plan: stop wick ${sm(x.sim)}; stop close ${sm(x.v4&&x.v4.sim)}</div>`:''}${fl.map(t=>`<div class="w">${esc(t)}</div>`).join('')}</article>`};
+const sl=(s,t)=>`${t}: skor ${s.skor==null?'n/a':s.skor+'%'} (sama ${s.sama}, sebagian ${s.sebagian}, beda ${s.beda}), level ${s.levelHit} dari ${s.levelTotal}.`;
+const ss=(x,t)=>`${t}: ${x.setup} setup, ${x.terisi} terisi, ${x.win} menang, ${x.sl} kena SL, rata-rata ${nn(x.avgR)}R, median ${nn(x.medR)}R, tanpa trade terbaik ${nn(x.tanpaTerbaik)}R, terburuk ${nn(x.minR)}R.`;
+const ujSum=()=>{const s=summarize(uj.res),b=ujBl,pc=v=>v==null?'n/a':v+'%';$('#ujsum').innerHTML=`<div class="c"><div class="g4"><div><span>Skor kecocokan (engine v1)</span>${pc(s.skor)}</div><div><span>Level cocok</span>${s.levelHit} dari ${s.levelTotal}</div><div><span>Rata-rata R, stop wick</span>${nn(s.sim.avgR)}</div><div><span>Rata-rata R, stop close</span>${nn(s.v4.sim.avgR)}</div></div>
+<div class="m">${sl(s,'Dataset Eliz')}</div><div class="m">${ss(s.sim,'v1 (stop wick)')}</div><div class="m">${ss(s.v4.sim,'v4 (stop close)')}</div>
+${b?`<div class="m">Pembanding acak, ${b.n} sampel (jam sembarang, koin yang sama; setup v1 dan v4 identik). ${ss(b.v1,'v1 (stop wick)')} ${ss(b.v4,'v4 (stop close)')}</div><div class="m">Dari ${b.par.n} trade terisi, ${b.par.beda} hasilnya berbeda: v4 lebih baik ${b.par.v4lebihBaik}, lebih buruk ${b.par.v4lebihBuruk}. Total R: v1 ${b.par.totalV1}, v4 ${b.par.totalV4}, selisih ${b.par.selisihR}.</div>`:''}
+<div class="m">Terpasang: harness ${VALNS.VERSION||'LAMA (perbarui validate.mjs)'}, dataset v${ds0&&ds0.meta?ds0.meta.versi:'?'} dengan ${ds0?ds0.entries.length:'?'} entri. Dataset terbaru: v3, 24 entri.</div>
+<div class="m">Satu trade besar menggeser rata-rata. Lihat median, "tanpa trade terbaik", dan kerugian terburuk.</div>
 ${s.waktuMencurigakan.length?`<div class="w">Harga chart tidak cocok dengan Binance pada: ${s.waktuMencurigakan.join(', ')}</div>`:''}</div>`};
 const ujLoad=async()=>ds0||(ds0=await (await fetch('./eliz-dataset.json')).json());
 $('#ujgo').onclick=async()=>{const b=$('#ujgo');b.disabled=true;$('#ujlist').innerHTML='';
