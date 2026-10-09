@@ -25,7 +25,7 @@ function keyLevels(d,px){const W=weekly(d).slice(0,-1),n=W.length;if(n<20)return
 function bias(b){const n=b.length,H=piv(b,3,n-120,n-3,'h',1),L=piv(b,3,n-120,n-3,'l',0);if(H.length<2||L.length<2)return 0;
  const hh=b[H.at(-1)].h>b[H.at(-2)].h,hl=b[L.at(-1)].l>b[L.at(-2)].l;return hh&&hl?1:!hh&&!hl?-1:0}
 
-function frame(b0,px,C,bs,lg){
+function frame(b0,px,C,bs,lg,tlbOn){
  const b=b0.slice(0,-1),n=b.length;if(n<C.look+10)return null;
  const{look,skip,rec,k,bo}=C,rb=b.slice(n-look,n-skip),H=Math.max(...rb.map(q=>q.h)),L=Math.min(...rb.map(q=>q.l)),rg=H-L;
  if(!(rg>0))return null;
@@ -47,9 +47,14 @@ function frame(b0,px,C,bs,lg){
  // Breakout/breakdown dengan acceptance (2+ close) lalu harga kembali me-retest level
  const BR=b.slice(n-bo),boUp=BR.filter(q=>q.c>H).length>=2&&px>=H-bd&&px<=H+1.5*bd,boDn=BR.filter(q=>q.c<L).length>=2&&px<=L+bd&&px>=L-1.5*bd;
 
- // Breakout trendline sungguhan (bukan Wolf yang gagal): 2+ close melewati garis, break masih baru (<8 candle), harga belum jauh dari garis
- const tb=(T,up)=>{if(lg||!T)return false;const j=[];for(let i=n-8;i<n;i++)j.push(up?b[i].c>ln(T,i):b[i].c<ln(T,i));let q=7;while(q>=0&&j[q])q--;
-  if(q<0||7-q<2)return false;const g=up?px-ln(T,n):ln(T,n)-px;return g>=-.5*bd&&g<=2*A};
+ // Breakout trendline (bukan Wolf yang gagal). Default MATI (ctx.tlb): hasil uji menunjukkan versi awal merugikan.
+ // Syarat: 2+ close melewati garis, break baru (<8 candle), entry limit di garis maksimal 2,5% dari harga, dan retest NYATA:
+ // setelah candle break, harga pernah kembali ke dalam 0,5 ATR dari garis (atau sedang berada di sana).
+ const tb=(T,up)=>{if(lg||!tlbOn||!T)return false;const j=[];for(let i=n-8;i<n;i++)j.push(up?b[i].c>ln(T,i):b[i].c<ln(T,i));let q=7;while(q>=0&&j[q])q--;
+  if(q<0||7-q<2)return false;
+  const L0=ln(T,n),g=up?px-L0:L0-px;if(g<-.5*bd||g>1.5*A||Math.abs(L0-px)/px>.025)return false;
+  for(let i=n-8+q+2;i<n;i++){const l0=ln(T,i);if(up?b[i].l<=l0+.5*A:b[i].h>=l0-.5*A)return true}
+  return g<=.5*A};
  const tbUp=tb(TH,1),tbDn=tb(TL,0);
  // Monday Range (hanya 4H): sweep Monday Low/High setelah Senin selesai
  let mon=null,mUp=false,mDn=false;
@@ -105,7 +110,7 @@ function mkPlan(s,fr,px,htf,b4){
 
 export function analyze(sym,d,f,ctx={}){
  const px=f.at(-1).c,dd=d.slice(0,-1),bs=bias(dd);
- const lg=!!ctx.legacy,f4=frame(f,px,CF.f4,bs,lg),f1=frame(d,px,CF.d1,bs,lg);
+ const lg=!!ctx.legacy,tlbOn=!!ctx.tlb,f4=frame(f,px,CF.f4,bs,lg,tlbOn),f1=frame(d,px,CF.d1,bs,lg,tlbOn);
  if(!f4&&!f1)throw new Error('data tidak cukup');
  const htf=f1?{sup:{a:f1.H-f1.bd,b:f1.H},dem:{a:f1.L,b:f1.L+f1.bd}}:null,b4=f.slice(0,-1),setups=[];
  for(const fr of[f4,f1])if(fr)for(const s of fr.S){const p=mkPlan(s,fr,px,htf,b4);if(!p||p.type==='ditolak')continue;
