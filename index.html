@@ -87,7 +87,7 @@ footer{max-width:800px;margin:30px auto;padding:0 16px;color:var(--mut);font-siz
 
 <script type="module">
 import {bj,kl,NOT,fmt as f,analyze,alertList} from './engine.mjs';
-import {runDataset,runBaseline,summarize,simStats} from './validate.mjs';
+import {runDataset,runBaseline,summarize,bl2} from './validate.mjs';
 const $=s=>document.querySelector(s),SD=['turun','datar','naik'];
 const ld=k=>{try{return localStorage.getItem(k)}catch(e){return null}},sv=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
 let all=[],btc=null,flt='all',extra=[],cur=null,tfv='4h';
@@ -202,19 +202,23 @@ const VC={sama:'ok',sebagian:'wait',beda:'S',berlawanan:'S','tidak terdeteksi':'
 const ujCard=x=>{if(x.error)return`<div class="c"><div class="t"><h3>${x.id}</h3><span class="ch wait">${x.optional?'tidak tersedia':'error'}</span></div><div class="m">${esc(x.error)}</div></div>`;
  const b=x.engine.best,cl=(x.claims||[]).map(c=>`<div class="m">Klaim${c.info?' (info)':c.conditional?' (bersyarat)':''}: ${esc(c.text)}: <b>${c.verdict}</b>, capaian maks ${c.ach}%</div>`).join(''),
  fl=[...x.flags,...(x.tsSuspect?[`Harga chart ${x.pxShown} vs Binance ${f(x.px)} (${x.pxDiff}%): waktu atau sumber mungkin salah`]:[]),...(x.result&&x.result.tsSuspect?[`Harga di post hasil ${x.result.pxShown} vs Binance ${f(x.result.pxActual)} (${x.result.pxDiff}%): waktu post hasil mungkin salah${x.result.altDiff!=null?`; terhadap tanggal di chart selisih ${x.result.altDiff}%`:''}`]:[])];
- return`<article class="c"><div class="t"><h3>${x.id}</h3><span><span class="ch">${x.cls}${x.dir?x.dir>0?' long':' short':''}</span><span class="ch ${VC[x.grade.verdict]}">${x.grade.verdict}</span></span></div>
+ return`<article class="c"><div class="t"><h3>${x.id}</h3><span><span class="ch">${x.cls}${x.dir?x.dir>0?' long':' short':''}</span>${x.v1&&x.v1.grade.verdict!==x.grade.verdict?`<span class="ch">v1: ${x.v1.grade.verdict}</span>`:''}<span class="ch ${VC[x.grade.verdict]}">${x.grade.verdict}</span></span></div>
 <div class="m">Eliz: ${esc(x.note)}</div><div class="m">Engine: ${b?`${b.side>0?'long':'short'} ${b.tf}, ${esc(b.why)}, entry ${f(b.entry)}, SL ${f(b.sl)}, ${b.rr.toFixed(1)}R`:esc(x.engine.st)}. ${esc(x.grade.note)}.</div>
 ${x.levels&&x.levels.total?`<div class="m">Level cocok: ${x.levels.hit} dari ${x.levels.total}${x.levels.miss.length?'. Meleset: '+esc(x.levels.miss.join('; ')):''}</div>`:''}${cl}
 ${x.sim?`<div class="m">Simulasi plan engine: ${x.sim.st}, ${x.sim.R.toFixed(2)}R</div>`:''}${fl.map(t=>`<div class="w">${esc(t)}</div>`).join('')}</article>`};
-const ujSum=()=>{const s=summarize(uj.res),e=s.sim;$('#ujsum').innerHTML=`<div class="c"><div class="g4"><div><span>Skor kecocokan</span>${s.skor==null?'n/a':s.skor+'%'}</div><div><span>Sama, sebagian, beda</span>${s.sama}, ${s.sebagian}, ${s.beda}</div><div><span>Level cocok</span>${s.levelHit} dari ${s.levelTotal}</div><div><span>Klaim terverifikasi</span>${s.klaimOk} dari ${s.klaimTotal}</div></div>
-<div class="m">Simulasi plan engine pada tanggal Eliz: ${e.setup} setup, ${e.terisi} terisi, ${e.win} menang, rata-rata ${e.avgR==null?'n/a':e.avgR+'R'}.${ujBl?` Pembanding acak: ${ujBl.setup} setup dari ${ujBl.n} sampel, ${ujBl.terisi} terisi, ${ujBl.win} menang, rata-rata ${ujBl.avgR==null?'n/a':ujBl.avgR+'R'}.`:''}</div>
+const sl=(s,t)=>`${t}: skor ${s.skor==null?'n/a':s.skor+'%'} (sama ${s.sama}, sebagian ${s.sebagian}, beda ${s.beda}), level ${s.levelHit} dari ${s.levelTotal}. Plan engine: ${s.sim.setup} setup, ${s.sim.terisi} terisi, ${s.sim.win} menang, rata-rata ${s.sim.avgR==null?'n/a':s.sim.avgR+'R'}, median ${s.sim.medR==null?'n/a':s.sim.medR+'R'}, tanpa trade terbaik ${s.sim.tanpaTerbaik==null?'n/a':s.sim.tanpaTerbaik+'R'}.`;
+const bs=(x,t)=>`${t}: ${x.setup} setup dari ${ujBl.n} sampel, ${x.terisi} terisi, ${x.win} menang, rata-rata ${x.avgR==null?'n/a':x.avgR+'R'}, median ${x.medR==null?'n/a':x.medR+'R'}.`;
+const ujSum=()=>{const s=summarize(uj.res);$('#ujsum').innerHTML=`<div class="c"><div class="g4"><div><span>Skor v2 (baru)</span>${s.skor==null?'n/a':s.skor+'%'}</div><div><span>Skor v1 (lama)</span>${s.v1.skor==null?'n/a':s.v1.skor+'%'}</div><div><span>Level cocok v2</span>${s.levelHit} dari ${s.levelTotal}</div><div><span>Klaim Eliz terverifikasi</span>${s.klaimOk} dari ${s.klaimTotal}</div></div>
+<div class="m">${sl(s,'Engine v2')}</div><div class="m">${sl(s.v1,'Engine v1')}</div>
+${ujBl?`<div class="m">Pembanding acak (jam sembarang, koin yang sama). ${bs(ujBl.v2,'v2')} ${bs(ujBl.v1,'v1')}</div>`:''}
+<div class="m">Angka dari puluhan sampel bergeser jauh oleh satu trade. Lihat median dan "tanpa trade terbaik", bukan hanya rata-rata.</div>
 ${s.waktuMencurigakan.length?`<div class="w">Harga chart tidak cocok dengan Binance pada: ${s.waktuMencurigakan.join(', ')}</div>`:''}</div>`};
 const ujLoad=async()=>ds0||(ds0=await (await fetch('./eliz-dataset.json')).json());
 $('#ujgo').onclick=async()=>{const b=$('#ujgo');b.disabled=true;$('#ujlist').innerHTML='';
  try{const ds=await ujLoad(),res=await runDataset(ds,{onProgress:(i,n,id)=>$('#ujst').textContent=`Menguji ${i} dari ${n}: ${id}`});uj={res,summary:summarize(res)};ujBl=null;ujSum();$('#ujlist').innerHTML=res.map(ujCard).join('');$('#ujst').textContent='Selesai.';$('#ujcp').disabled=false}
  catch(x){$('#ujst').textContent='Gagal: '+x.message}b.disabled=false};
 $('#ujbl').onclick=async()=>{if(!uj){$('#ujst').textContent='Jalankan uji dataset dulu.';return}const b=$('#ujbl');b.disabled=true;
- try{const bl=await runBaseline(await ujLoad(),{n:60,onProgress:(i,n)=>$('#ujst').textContent=`Pembanding acak ${i} dari ${n}`});ujBl=simStats(bl);uj.baseline=bl;ujSum();$('#ujst').textContent='Selesai.'}
+ try{const bl=await runBaseline(await ujLoad(),{n:100,onProgress:(i,n)=>$('#ujst').textContent=`Pembanding acak ${i} dari ${n}`});ujBl=bl2(bl);uj.baseline=bl;ujSum();$('#ujst').textContent='Selesai.'}
  catch(x){$('#ujst').textContent='Gagal: '+x.message}b.disabled=false};
 $('#ujcp').onclick=async()=>{const t=JSON.stringify(uj);try{await navigator.clipboard.writeText(t)}catch(x){const a=document.createElement('textarea');a.value=t;document.body.append(a);a.select();document.execCommand('copy');a.remove()}$('#ujst').textContent='Hasil disalin.'};
 

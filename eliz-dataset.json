@@ -1,109 +1,812 @@
 {
-"meta":{"sumber":"PDF 1: Analisis dan hasil analisis dari eliz883","zona_waktu":"WIB (+07:00)","versi":1,
-"catatan":["src 'teks' = angka disebut di teks post. 'chart' = label harga di sumbu chart. 'chart~' = perkiraan dari posisi pixel, toleransi sekitar 2 persen.",
+"meta": {
+"sumber": "PDF 1: Analisis dan hasil analisis dari eliz883",
+"zona_waktu": "WIB (+07:00)",
+"versi": 2,
+"catatan": [
+"src 'teks' = angka disebut di teks post. 'chart' = label harga di sumbu chart. 'chart~' = perkiraan dari posisi pixel, toleransi sekitar 2 persen.",
 "cls: setup = ada pemicu atau level dan arah. bias = arah saja. notrade = Eliz diam. scenario = dua arah atau level saja. invest = spot jangka panjang. context = tanpa teks.",
 "Level dengan role berawalan 'target' tidak ikut penilaian level (hanya info).",
 "pxShown = harga di chart post. Dipakai untuk mengecek apakah tanggal dan jam di dataset cocok dengan data Binance.",
-"Dataset berisi post pilihan Eliz sendiri (cenderung yang berhasil). Cocok untuk mengecek apakah engine melihat yang dia lihat, bukan untuk membuktikan profit."]},
-"entries":[
-{"id":"FET-0917","sym":"FET","ts":"2026-09-17T19:27:00+07:00","cls":"bias","dir":1,"tf":"1W","pxShown":0.1597,
- "levels":[{"v":0.2741,"role":"resistance dan trigger","src":"teks"},{"v":0.6047,"role":"resistance atas","src":"chart"}],
- "zones":[{"lo":0.133,"hi":0.153,"role":"demand mingguan","src":"chart~"}],"pat":["htf-zone","breakout-wait"],
- "note":"Konsolidasi di atas support dan di bawah resistance 0,274; bullish, tunggu break dan konsolidasi di atas level.","horizonDays":21,
- "result":{"ts":"2026-10-05T02:08:00+07:00","pxShown":0.2533,"note":"Klaim naik 80 persen"},
- "claims":[{"text":"+80% dihitung dari harga saat post","pct":80,"dir":1},{"text":"+80% dihitung dari low 30 hari sebelum post","pct":80,"dir":1,"altBase":"low30","info":true}],
- "flags":["Saat post hasil harga 0,2533 masih di bawah trigger 0,2741: break dan konsolidasi belum terjadi, dan basis 80 persen tidak disebut."]},
-{"id":"PHA-0906","sym":"PHA","ts":"2026-09-06T22:04:00+07:00","cls":"setup","dir":1,"tf":"1D","pxShown":0.0273,
- "levels":[],"zones":[{"lo":0.0256,"hi":0.027,"role":"supply yang ditembus","src":"chart~"}],"pat":["breakout-retest"],
- "note":"Mata tertuju pada breakout zona supply. Tanpa invalidasi eksplisit.","horizonDays":21,
- "result":{"ts":"2026-09-25T20:58:00+07:00","altTs":"2026-10-03T12:00:00+07:00","pxShown":0.0767,"note":"Klaim 200 persen"},
- "claims":[{"text":"+200% dari dasar zona 0,0256","pct":200,"dir":1,"base":0.0256},{"text":"+200% dari harga saat post","pct":200,"dir":1,"info":true}],
- "flags":["Tanggal di chart hasil (sab 03 Okt) berbeda dari tanggal post (25 Sep).","Angka 200 persen diukur dari dasar zona 0,0256, bukan harga saat post 0,0273 (sekitar +181 persen)."]},
-{"id":"ALICE-0929","sym":"ALICE","ts":"2026-09-29T13:15:00+07:00","cls":"setup","dir":1,"tf":"3D","pxShown":0.1573,
- "levels":[],"zones":[{"lo":0.164,"hi":0.178,"role":"supply di atas harga","src":"chart~"}],"pat":["breakout-retest","trendline-break"],
- "note":"Kalau breakout, bisa bergerak 30 sampai 50 persen. Trendline turun mulai ditembus.","horizonDays":7,
- "result":{"ts":"2026-10-01T21:59:00+07:00","pxShown":0.20012,"note":"Kartu Bybit Long 10x, ROI +257,39%, entry 0,14829"},
- "claims":[{"text":"Breakout memberi 30 persen dari harga saat post","pct":30,"dir":1},{"text":"Hampir 30 persen dari entry kartu Bybit 0,14829","pct":30,"dir":1,"base":0.14829,"info":true}],
- "flags":["ROI 257,39% pada 10x tidak cocok dengan entry ke harga sekarang di kartu (+34,95% x 10 = sekitar 350%).","Entry kartu 0,14829 lebih rendah dari harga chart post 0,1573: entry kemungkinan sebelum post."]},
-{"id":"TAO-0729","sym":"TAO","ts":"2026-07-29T03:19:00+07:00","cls":"invest","dir":1,"tf":"2D","pxShown":195.49,
- "levels":[{"v":253.56,"role":"resistance (garis chart)","src":"chart"}],"zones":[],"pat":[],
- "note":"Filosofi investasi spot: siap turun ke nol demi 10x sampai 20x, tanpa stop.","horizonDays":30,
- "result":{"ts":"2026-08-24T03:37:00+07:00","pxShown":244.51,"note":"Nice job"},
- "flags":["Bukan setup trading (investasi spot tanpa stop), dilewati dari penilaian setup."]},
-{"id":"TAO-0918","sym":"TAO","pair":"TAOBTC","ts":"2026-09-18T13:41:00+07:00","cls":"invest","dir":1,"tf":"3D","pxShown":0.003119,
- "levels":[],"zones":[],"pat":[],"note":"Akumulasi di pasangan BTC, membeli spot sekitar 200k dalam sebulan.","horizonDays":7,
- "result":{"ts":"2026-09-19T22:51:00+07:00","pxShown":null,"note":"Klaim 200k jadi 1 M profit"},
- "flags":["Klaim tidak bisa diverifikasi: tanpa mata uang, harga entry, atau bukti eksekusi."]},
-{"id":"SOL-0815","sym":"SOL","ts":"2026-08-15T20:28:00+07:00","cls":"setup","dir":1,"tf":"4H","pxShown":75.47,
- "levels":[{"v":80,"role":"target 1","src":"teks"},{"v":85,"role":"target 2 (85+)","src":"teks"},{"v":87.2,"role":"resistance (garis chart)","src":"chart"}],
- "zones":[{"lo":73,"hi":75,"role":"demand (zona 73 sampai 75)","src":"teks"}],"pat":["breakout-retest","retest-zone"],
- "note":"Level ditembus dan rally mulai. Selama 73 sampai 75 bertahan struktur bullish; target 80 lalu 85+.","horizonDays":6,
- "result":{"ts":"2026-08-19T22:04:00+07:00","pxShown":81.01,"note":"80 dolar tercapai"},
- "claims":[{"text":"Target 80 tercapai","level":80,"dir":1}]},
-{"id":"TURBO-0828","sym":"TURBO","ts":"2026-08-28T23:06:00+07:00","cls":"setup","dir":1,"tf":"1D","pxShown":0.001015,
- "levels":[],"zones":[],"pat":["trendline-break"],"note":"Breakout trendline turun di daily; hanya disebut menarik, arah long tersirat dari chart.","horizonDays":5,
- "result":{"ts":"2026-08-29T03:41:00+07:00","pxShown":0.001121,"note":"Klaim profit 12 persen saat pasar turun"},
- "claims":[{"text":"Profit 12 persen dari harga saat post","pct":12,"dir":1}],
- "flags":["Arah tidak disebut eksplisit.","+11,76% di layar adalah perubahan harian, bukan dari titik entry."]},
-{"id":"XPL-0730","sym":"XPL","ts":"2026-07-30T02:04:00+07:00","cls":"setup","dir":1,"tf":"2H dan 12H","pxShown":0.07948,
- "levels":[],"zones":[{"lo":0.0745,"hi":0.0795,"role":"demand 'blue box' (2H sekitar 0,0781-0,0795; 12H sekitar 0,0745-0,0779)","src":"chart~"}],"pat":["retest-zone","sweep-reclaim"],
- "note":"Level signifikan. Jika harga me-retest blue box dalam waktu dekat, gambaran teknikal membaik dan skenario bullish makin yakin.","horizonDays":25,
- "result":{"ts":"2026-08-21T21:20:00+07:00","pxShown":0.10385,"note":"Hanya tanda centang dan api"},
- "flags":["Hasil diposting 22 hari kemudian tanpa entry atau target: tidak bisa dinilai menang atau kalah."]},
-{"id":"MANIFEST-0820","sym":"MANIFEST","ts":"2026-08-20T04:56:00+07:00","cls":"bias","dir":1,"tf":"-","pxShown":null,"optional":true,
- "levels":[],"zones":[],"pat":[],"note":"Waktunya call bottom untuk MANIFEST.","horizonDays":5,
- "result":{"ts":"2026-08-23T05:36:00+07:00","pxShown":null,"note":"Bounce terjadi setelah tweet; butuh volume untuk gerakan sebenarnya"},
- "flags":["Gambar terlampir adalah screenshot pasar prediksi olahraga, bukan chart MANIFEST.","Chart hasil MANIFEST/SOL dari DEX; mungkin tidak ada di Binance.","Pada koin kecil, post bisa ikut menggerakkan harga."]},
-{"id":"BTC-0827","sym":"BTC","ts":"2026-08-27T00:44:00+07:00","cls":"notrade","dir":0,"tf":"15m","pxShown":78015.56,
- "levels":[],"zones":[{"lo":79900,"hi":80700,"role":"supply atas","src":"chart~"},{"lo":75900,"hi":76400,"role":"demand bawah","src":"chart~"}],"pat":["mid-range"],
- "note":"Di tengah range, sabar. Tunggu salah satu ekstrem.","horizonDays":2},
-{"id":"BTC-0828","sym":"BTC","ts":"2026-08-28T16:30:00+07:00","cls":"scenario","dir":0,"tf":"1H","pxShown":79438.6,
- "levels":[{"v":85000,"role":"target naik","src":"teks"},{"v":75000,"role":"target turun","src":"teks"}],
- "zones":[{"lo":81000,"hi":82000,"role":"resistance penentu (teks)","src":"teks"}],"pat":["range-edges"],
- "note":"Jika tembus 81 sampai 82k hari ini, menuju 85 sampai 86k. Jika tidak, peluang turun ke area 75k.","horizonDays":2,
- "claims":[{"text":"Cabang naik: sampai 85k","level":85000,"dir":1,"conditional":true,"by":"2026-08-29T16:30:00+07:00"},{"text":"Cabang turun: sampai 75k","level":75000,"dir":-1,"conditional":true,"by":"2026-08-29T16:30:00+07:00"}]},
-{"id":"PUMP-0726","sym":"PUMP","ts":"2026-07-26T07:13:00+07:00","cls":"setup","dir":1,"tf":"1D","pxShown":0.001786,
- "levels":[],"zones":[{"lo":0.00165,"hi":0.00183,"role":"demand (pink)","src":"chart~"}],"pat":["sweep-reclaim"],
- "note":"Bisa jadi re-entry yang bagus jika deviation terkonfirmasi.","horizonDays":5,
- "result":{"ts":"2026-07-27T20:16:00+07:00","altTs":"2026-09-29T12:00:00+07:00","pxShown":0.002175,"note":"Klaim profit 30 persen dari trading desk"},
- "claims":[{"text":"Profit 30 persen dari harga saat post","pct":30,"dir":1}],
- "flags":["Penggaris di chart menunjukkan +24,88% (0,001742 ke 0,002175), bukan 30%.","Tanggal di chart hasil (29 Sep) berbeda dari tanggal post (27 Jul).","Kata 'our trading desk': hasil bukan hanya dari satu orang."]},
-{"id":"BTC-0728","sym":"BTC","ts":"2026-07-28T06:26:00+07:00","cls":"scenario","dir":0,"tf":"2H","pxShown":63870.71,
- "levels":[{"v":65700,"role":"high range lokal","src":"chart~"},{"v":63550,"role":"low range lokal","src":"chart~"}],
- "zones":[{"lo":65800,"hi":66500,"role":"supply atas","src":"chart~"}],"pat":["range-edges","sweep-reclaim"],
- "note":"Hanya tulisan: likuiditas adalah kunci. Dua skenario digambar tangan: sweep low lalu naik, atau ditolak di supply.","horizonDays":3,
- "result":{"ts":"2026-07-30T01:56:00+07:00","pxShown":64525.51,"note":"Rencana sempurna; jika mid-range direbut jadi support, bisa lebih tinggi"}},
-{"id":"BTC-0729","sym":"BTC","ts":"2026-07-29T16:14:00+07:00","cls":"context","dir":0,"tf":"2H","pxShown":64390.49,"levels":[],"zones":[],"pat":[],"note":"Tanpa teks, hanya chart.","horizonDays":2},
-{"id":"ETH-0717","sym":"ETH","ts":"2026-07-17T17:21:00+07:00","cls":"bias","dir":1,"tf":"2H","pxShown":1831.7,
- "levels":[{"v":1765,"role":"support (garis hitam)","src":"chart~"}],"zones":[{"lo":1848,"hi":2010,"role":"supply besar (pink)","src":"chart~"}],"pat":["range-bounce"],
- "note":"Butuh new high dulu sebelum turun; berisiko karena situasi politik dan volume rendah.","horizonDays":4,
- "result":{"ts":"2026-07-20T23:16:00+07:00","pxShown":1900.58,"note":"Mengikuti garis dengan sempurna"}},
-{"id":"LTC-0726","sym":"LTC","ts":"2026-07-26T02:39:00+07:00","cls":"setup","dir":1,"tf":"1H","pxShown":46.38,
- "levels":[],"zones":[{"lo":46.2,"hi":46.4,"role":"box demand","src":"chart~"}],"pat":["sweep-reclaim"],
- "note":"Setup bagus terbentuk di atas box (scalp).","horizonDays":2,
- "result":{"ts":"2026-07-26T17:40:00+07:00","pxShown":47.24,"note":"Gerakan bagus untuk scalp ini"}},
-{"id":"SOL-0712","sym":"SOL","ts":"2026-07-12T22:21:00+07:00","cls":"bias","dir":1,"tf":"1D","pxShown":77.39,
- "levels":[{"v":87.2,"role":"resistance (garis chart)","src":"chart"}],"zones":[],"pat":["trendline-support","htf-bias"],
- "note":"Konsolidasi bearish yang rapi setelah rally, dianggap sehat; tren naik diharapkan lanjut.","horizonDays":30,
- "result":{"ts":"2026-07-27T05:57:00+07:00","pxShown":76.66,"note":"Magic line bertahan, rencana sama"},
- "flags":["Tanpa trigger atau invalidasi eksplisit: hanya bias."]},
-{"id":"BTC-0712","sym":"BTC","ts":"2026-07-12T15:34:00+07:00","cls":"notrade","dir":0,"tf":"4H","pxShown":64008.84,
- "levels":[],"zones":[{"lo":64800,"hi":66050,"role":"supply (oranye)","src":"chart~"},{"lo":59900,"hi":60800,"role":"demand (biru)","src":"chart~"},{"lo":70000,"hi":71200,"role":"supply atas (pink)","src":"chart~"}],"pat":["mid-range"],
- "note":"Level sama seperti biasa, tidak tertarik di tengah. Pemicu jelas.","horizonDays":3,
- "result":{"ts":"2026-07-14T01:00:00+07:00","pxShown":61900.01,"note":"Nice job and nice strategy"},
- "claims":[{"text":"Harga turun ke zona demand 59,9 sampai 60,8k","level":60800,"dir":-1,"conditional":true,"by":"2026-07-15T01:00:00+07:00"}]},
-{"id":"SOL-0625","sym":"SOL","ts":"2026-06-25T13:58:00+07:00","cls":"setup","dir":1,"tf":"4H","pxShown":69.47,
- "levels":[{"v":80.62,"role":"level (garis chart)","src":"chart"}],"zones":[{"lo":67.4,"hi":68.6,"role":"demand biru","src":"chart~"},{"lo":82.5,"hi":95,"role":"supply merah","src":"chart~"}],"pat":["sweep-reclaim"],
- "note":"Lanjut setelah menyentuh low dan sweep likuiditas? Tanya pendapat pengikut.","horizonDays":4,
- "result":{"ts":"2026-06-28T16:51:00+07:00","pxShown":71.76,"note":"Level bekerja; sempat kena SL kecil akibat sapuan BTC, masuk ulang lalu profit"},
- "flags":["Ada trade yang kena SL sebelum akhirnya profit. Entry dan exit tidak dipublikasikan."]},
-{"id":"ETH-0620","sym":"ETH","ts":"2026-06-20T05:28:00+07:00","cls":"scenario","dir":0,"tf":"2H","pxShown":1705.04,
- "levels":[{"v":1714.08,"role":"garis biru","src":"chart"}],"zones":[{"lo":1705,"hi":1725,"role":"zona atas","src":"chart~"},{"lo":1650,"hi":1662,"role":"zona bawah","src":"chart~"}],"pat":["range-edges"],
- "note":"Pasar lambat dan berisik; hanya trigger probabilitas tinggi dengan invalidasi sederhana.","horizonDays":3,
- "result":{"ts":"2026-06-22T16:30:00+07:00","pxShown":1746.45,"note":"Berhasil dua kali; tunggu close Senin untuk trigger baru"}},
-{"id":"FLOKI-0618","sym":"FLOKI","ts":"2026-06-18T19:43:00+07:00","cls":"bias","dir":1,"tf":"2H","pxShown":0.00002592,
- "levels":[{"v":0.00003785,"role":"target (garis biru)","src":"chart"}],"zones":[{"lo":0.0000254,"hi":0.000026,"role":"demand hijau","src":"chart~"}],"pat":["trendline-break"],
- "note":"Masih di dalam posisi, keyakinan masih tinggi.","horizonDays":3,
- "result":{"ts":"2026-06-19T04:49:00+07:00","pxShown":0.00002699,"note":"Kartu Bybit 1000FLOKIUSDT Long 15x, ROI +49,50%, entry 0,02611"},
- "flags":["Aritmetika kartu masuk akal: +3,37% x 15 sekitar 50 persen setelah biaya.","Entry kartu sedikit di atas harga chart post: entry sebelum post."]}
-]}
+"Dataset berisi post pilihan Eliz sendiri (cenderung yang berhasil). Cocok untuk mengecek apakah engine melihat yang dia lihat, bukan untuk membuktikan profit."
+]
+},
+"entries": [
+{
+"id": "FET-0917",
+"sym": "FET",
+"ts": "2026-09-17T19:27:00+07:00",
+"cls": "bias",
+"dir": 1,
+"tf": "1W",
+"pxShown": 0.1597,
+"levels": [
+{
+"v": 0.2741,
+"role": "resistance dan trigger",
+"src": "teks"
+},
+{
+"v": 0.6047,
+"role": "resistance atas",
+"src": "chart"
+}
+],
+"zones": [
+{
+"lo": 0.133,
+"hi": 0.153,
+"role": "demand mingguan",
+"src": "chart~"
+}
+],
+"pat": [
+"htf-zone",
+"breakout-wait"
+],
+"note": "Konsolidasi di atas support dan di bawah resistance 0,274; bullish, tunggu break dan konsolidasi di atas level.",
+"horizonDays": 21,
+"result": {
+"ts": "2026-10-05T02:08:00+07:00",
+"pxShown": 0.2533,
+"note": "Klaim naik 80 persen"
+},
+"claims": [
+{
+"text": "+80% dihitung dari harga saat post",
+"pct": 80,
+"dir": 1
+},
+{
+"text": "+80% dihitung dari low 30 hari sebelum post",
+"pct": 80,
+"dir": 1,
+"altBase": "low30",
+"info": true
+}
+],
+"flags": [
+"Saat post hasil harga 0,2533 masih di bawah trigger 0,2741: break dan konsolidasi belum terjadi, dan basis 80 persen tidak disebut."
+]
+},
+{
+"id": "PHA-0906",
+"sym": "PHA",
+"ts": "2026-09-06T22:04:00+07:00",
+"cls": "setup",
+"dir": 1,
+"tf": "1D",
+"pxShown": 0.0273,
+"levels": [],
+"zones": [
+{
+"lo": 0.0256,
+"hi": 0.027,
+"role": "supply yang ditembus",
+"src": "chart~"
+}
+],
+"pat": [
+"breakout-retest"
+],
+"note": "Mata tertuju pada breakout zona supply. Tanpa invalidasi eksplisit.",
+"horizonDays": 21,
+"result": {
+"ts": "2026-09-25T20:58:00+07:00",
+"altTs": "2026-10-03T12:00:00+07:00",
+"pxShown": 0.0767,
+"note": "Klaim 200 persen"
+},
+"claims": [
+{
+"text": "+200% dari dasar zona 0,0256",
+"pct": 200,
+"dir": 1,
+"base": 0.0256
+},
+{
+"text": "+200% dari harga saat post",
+"pct": 200,
+"dir": 1,
+"info": true
+}
+],
+"flags": [
+"Tanggal di chart hasil (sab 03 Okt) berbeda dari tanggal post (25 Sep).",
+"Angka 200 persen diukur dari dasar zona 0,0256, bukan harga saat post 0,0273 (sekitar +181 persen)."
+]
+},
+{
+"id": "ALICE-0929",
+"sym": "ALICE",
+"ts": "2026-09-29T13:15:00+07:00",
+"cls": "setup",
+"dir": 1,
+"tf": "3D",
+"pxShown": 0.1573,
+"levels": [],
+"zones": [
+{
+"lo": 0.164,
+"hi": 0.178,
+"role": "supply di atas harga",
+"src": "chart~"
+}
+],
+"pat": [
+"breakout-retest",
+"trendline-break"
+],
+"note": "Kalau breakout, bisa bergerak 30 sampai 50 persen. Trendline turun mulai ditembus.",
+"horizonDays": 7,
+"result": {
+"ts": "2026-10-01T21:59:00+07:00",
+"pxShown": 0.20012,
+"note": "Kartu Bybit Long 10x, ROI +257,39%, entry 0,14829"
+},
+"claims": [
+{
+"text": "Breakout memberi 30 persen dari harga saat post",
+"pct": 30,
+"dir": 1
+},
+{
+"text": "Hampir 30 persen dari entry kartu Bybit 0,14829",
+"pct": 30,
+"dir": 1,
+"base": 0.14829,
+"info": true
+}
+],
+"flags": [
+"ROI 257,39% pada 10x tidak cocok dengan entry ke harga sekarang di kartu (+34,95% x 10 = sekitar 350%).",
+"Entry kartu 0,14829 lebih rendah dari harga chart post 0,1573: entry kemungkinan sebelum post."
+]
+},
+{
+"id": "TAO-0729",
+"sym": "TAO",
+"ts": "2026-07-29T03:19:00+07:00",
+"cls": "invest",
+"dir": 1,
+"tf": "2D",
+"pxShown": 195.49,
+"levels": [
+{
+"v": 253.56,
+"role": "resistance (garis chart)",
+"src": "chart"
+}
+],
+"zones": [],
+"pat": [],
+"note": "Filosofi investasi spot: siap turun ke nol demi 10x sampai 20x, tanpa stop.",
+"horizonDays": 30,
+"result": {
+"ts": "2026-08-24T03:37:00+07:00",
+"pxShown": 244.51,
+"note": "Nice job"
+},
+"flags": [
+"Bukan setup trading (investasi spot tanpa stop), dilewati dari penilaian setup."
+]
+},
+{
+"id": "TAO-0918",
+"sym": "TAO",
+"pair": "TAOBTC",
+"ts": "2026-09-18T13:41:00+07:00",
+"cls": "invest",
+"dir": 1,
+"tf": "3D",
+"pxShown": 0.003119,
+"levels": [],
+"zones": [],
+"pat": [],
+"note": "Akumulasi di pasangan BTC, membeli spot sekitar 200k dalam sebulan.",
+"horizonDays": 7,
+"result": {
+"ts": "2026-09-19T22:51:00+07:00",
+"pxShown": null,
+"note": "Klaim 200k jadi 1 M profit"
+},
+"flags": [
+"Klaim tidak bisa diverifikasi: tanpa mata uang, harga entry, atau bukti eksekusi."
+]
+},
+{
+"id": "SOL-0815",
+"sym": "SOL",
+"ts": "2026-08-15T20:28:00+07:00",
+"cls": "setup",
+"dir": 1,
+"tf": "4H",
+"pxShown": 75.47,
+"levels": [
+{
+"v": 80,
+"role": "target 1",
+"src": "teks"
+},
+{
+"v": 85,
+"role": "target 2 (85+)",
+"src": "teks"
+},
+{
+"v": 87.2,
+"role": "resistance (garis chart)",
+"src": "chart"
+}
+],
+"zones": [
+{
+"lo": 73,
+"hi": 75,
+"role": "demand (zona 73 sampai 75)",
+"src": "teks"
+}
+],
+"pat": [
+"breakout-retest",
+"retest-zone"
+],
+"note": "Level ditembus dan rally mulai. Selama 73 sampai 75 bertahan struktur bullish; target 80 lalu 85+.",
+"horizonDays": 6,
+"result": {
+"ts": "2026-08-19T22:04:00+07:00",
+"pxShown": 81.01,
+"note": "80 dolar tercapai"
+},
+"claims": [
+{
+"text": "Target 80 tercapai",
+"level": 80,
+"dir": 1
+}
+]
+},
+{
+"id": "TURBO-0828",
+"sym": "TURBO",
+"ts": "2026-08-28T23:06:00+07:00",
+"cls": "setup",
+"dir": 1,
+"tf": "1D",
+"pxShown": 0.001015,
+"levels": [],
+"zones": [],
+"pat": [
+"trendline-break"
+],
+"note": "Breakout trendline turun di daily; hanya disebut menarik, arah long tersirat dari chart.",
+"horizonDays": 5,
+"result": {
+"ts": "2026-08-29T03:41:00+07:00",
+"pxShown": 0.001121,
+"note": "Klaim profit 12 persen saat pasar turun"
+},
+"claims": [
+{
+"text": "Profit 12 persen dari harga saat post",
+"pct": 12,
+"dir": 1
+}
+],
+"flags": [
+"Arah tidak disebut eksplisit.",
+"+11,76% di layar adalah perubahan harian, bukan dari titik entry."
+]
+},
+{
+"id": "XPL-0730",
+"sym": "XPL",
+"ts": "2026-07-30T02:04:00+07:00",
+"cls": "setup",
+"dir": 1,
+"tf": "2H dan 12H",
+"pxShown": 0.07948,
+"levels": [],
+"zones": [
+{
+"lo": 0.0745,
+"hi": 0.0795,
+"role": "demand 'blue box' (2H sekitar 0,0781-0,0795; 12H sekitar 0,0745-0,0779)",
+"src": "chart~"
+}
+],
+"pat": [
+"retest-zone",
+"sweep-reclaim"
+],
+"note": "Level signifikan. Jika harga me-retest blue box dalam waktu dekat, gambaran teknikal membaik dan skenario bullish makin yakin.",
+"horizonDays": 25,
+"result": {
+"ts": "2026-08-21T21:20:00+07:00",
+"pxShown": 0.10385,
+"note": "Hanya tanda centang dan api"
+},
+"flags": [
+"Hasil diposting 22 hari kemudian tanpa entry atau target: tidak bisa dinilai menang atau kalah."
+]
+},
+{
+"id": "MANIFEST-0820",
+"sym": "MANIFEST",
+"ts": "2026-08-20T04:56:00+07:00",
+"cls": "bias",
+"dir": 1,
+"tf": "-",
+"pxShown": null,
+"optional": true,
+"levels": [],
+"zones": [],
+"pat": [],
+"note": "Waktunya call bottom untuk MANIFEST.",
+"horizonDays": 5,
+"result": {
+"ts": "2026-08-23T05:36:00+07:00",
+"pxShown": null,
+"note": "Bounce terjadi setelah tweet; butuh volume untuk gerakan sebenarnya"
+},
+"flags": [
+"Gambar terlampir adalah screenshot pasar prediksi olahraga, bukan chart MANIFEST.",
+"Chart hasil MANIFEST/SOL dari DEX; mungkin tidak ada di Binance.",
+"Pada koin kecil, post bisa ikut menggerakkan harga."
+]
+},
+{
+"id": "BTC-0827",
+"sym": "BTC",
+"ts": "2026-08-27T00:44:00+07:00",
+"cls": "notrade",
+"dir": 0,
+"tf": "15m",
+"pxShown": 78015.56,
+"levels": [],
+"zones": [
+{
+"lo": 79900,
+"hi": 80700,
+"role": "supply atas",
+"src": "chart~"
+},
+{
+"lo": 75900,
+"hi": 76400,
+"role": "demand bawah",
+"src": "chart~"
+}
+],
+"pat": [
+"mid-range"
+],
+"note": "Di tengah range, sabar. Tunggu salah satu ekstrem.",
+"horizonDays": 2
+},
+{
+"id": "BTC-0828",
+"sym": "BTC",
+"ts": "2026-08-28T16:30:00+07:00",
+"cls": "scenario",
+"dir": 0,
+"tf": "1H",
+"pxShown": 79438.6,
+"levels": [
+{
+"v": 85000,
+"role": "target naik",
+"src": "teks"
+},
+{
+"v": 75000,
+"role": "target turun",
+"src": "teks"
+}
+],
+"zones": [
+{
+"lo": 81000,
+"hi": 82000,
+"role": "resistance penentu (teks)",
+"src": "teks"
+}
+],
+"pat": [
+"range-edges"
+],
+"note": "Jika tembus 81 sampai 82k hari ini, menuju 85 sampai 86k. Jika tidak, peluang turun ke area 75k.",
+"horizonDays": 2,
+"claims": [
+{
+"text": "Cabang naik: sampai 85k",
+"level": 85000,
+"dir": 1,
+"conditional": true,
+"by": "2026-08-29T16:30:00+07:00"
+},
+{
+"text": "Cabang turun: sampai 75k",
+"level": 75000,
+"dir": -1,
+"conditional": true,
+"by": "2026-08-29T16:30:00+07:00"
+}
+]
+},
+{
+"id": "PUMP-0726",
+"sym": "PUMP",
+"ts": "2026-07-26T07:13:00+07:00",
+"cls": "setup",
+"dir": 1,
+"tf": "1D",
+"pxShown": 0.001786,
+"levels": [],
+"zones": [
+{
+"lo": 0.00165,
+"hi": 0.00183,
+"role": "demand (pink)",
+"src": "chart~"
+}
+],
+"pat": [
+"sweep-reclaim"
+],
+"note": "Bisa jadi re-entry yang bagus jika deviation terkonfirmasi.",
+"horizonDays": 5,
+"result": {
+"ts": "2026-07-27T20:16:00+07:00",
+"altTs": "2026-09-29T12:00:00+07:00",
+"pxShown": 0.002175,
+"note": "Klaim profit 30 persen dari trading desk"
+},
+"claims": [
+{
+"text": "Profit 30 persen dari harga saat post",
+"pct": 30,
+"dir": 1
+}
+],
+"flags": [
+"Penggaris di chart menunjukkan +24,88% (0,001742 ke 0,002175), bukan 30%.",
+"Tanggal di chart hasil (29 Sep) berbeda dari tanggal post (27 Jul).",
+"Kata 'our trading desk': hasil bukan hanya dari satu orang."
+]
+},
+{
+"id": "BTC-0728",
+"sym": "BTC",
+"ts": "2026-07-28T06:26:00+07:00",
+"cls": "scenario",
+"dir": 0,
+"tf": "2H",
+"pxShown": 63870.71,
+"levels": [
+{
+"v": 65700,
+"role": "high range lokal",
+"src": "chart~"
+},
+{
+"v": 63550,
+"role": "low range lokal",
+"src": "chart~"
+}
+],
+"zones": [
+{
+"lo": 65800,
+"hi": 66500,
+"role": "supply atas",
+"src": "chart~"
+}
+],
+"pat": [
+"range-edges",
+"sweep-reclaim"
+],
+"note": "Hanya tulisan: likuiditas adalah kunci. Dua skenario digambar tangan: sweep low lalu naik, atau ditolak di supply.",
+"horizonDays": 3,
+"result": {
+"ts": "2026-07-30T01:56:00+07:00",
+"pxShown": 64525.51,
+"note": "Rencana sempurna; jika mid-range direbut jadi support, bisa lebih tinggi"
+}
+},
+{
+"id": "BTC-0729",
+"sym": "BTC",
+"ts": "2026-07-29T16:14:00+07:00",
+"cls": "setup",
+"dir": 1,
+"tf": "2H",
+"pxShown": 64390.49,
+"levels": [
+{
+"v": 65700,
+"role": "high range lokal",
+"src": "chart~"
+},
+{
+"v": 63550,
+"role": "low range lokal",
+"src": "chart~"
+}
+],
+"zones": [],
+"pat": [
+"sweep-reclaim"
+],
+"note": "Tanpa teks. Chart memperlihatkan sweep di bawah low range lokal lalu pantulan; post 30 Juli menyebutnya rencana sempurna.",
+"horizonDays": 2,
+"flags": [
+"Arah long adalah inferensi dari chart dan post 30 Juli, bukan dari teks post ini."
+]
+},
+{
+"id": "ETH-0717",
+"sym": "ETH",
+"ts": "2026-07-17T17:21:00+07:00",
+"cls": "bias",
+"dir": 1,
+"tf": "2H",
+"pxShown": 1831.7,
+"levels": [
+{
+"v": 1765,
+"role": "support (garis hitam)",
+"src": "chart~"
+}
+],
+"zones": [
+{
+"lo": 1848,
+"hi": 2010,
+"role": "supply besar (pink)",
+"src": "chart~"
+}
+],
+"pat": [
+"range-bounce"
+],
+"note": "Butuh new high dulu sebelum turun; berisiko karena situasi politik dan volume rendah.",
+"horizonDays": 4,
+"result": {
+"ts": "2026-07-20T23:16:00+07:00",
+"pxShown": 1900.58,
+"note": "Mengikuti garis dengan sempurna"
+}
+},
+{
+"id": "LTC-0726",
+"sym": "LTC",
+"ts": "2026-07-26T02:39:00+07:00",
+"cls": "setup",
+"dir": 1,
+"tf": "1H",
+"pxShown": 46.38,
+"levels": [],
+"zones": [
+{
+"lo": 46.2,
+"hi": 46.4,
+"role": "box demand",
+"src": "chart~"
+}
+],
+"pat": [
+"sweep-reclaim"
+],
+"note": "Setup bagus terbentuk di atas box (scalp).",
+"horizonDays": 2,
+"result": {
+"ts": "2026-07-26T17:40:00+07:00",
+"pxShown": 47.24,
+"note": "Gerakan bagus untuk scalp ini"
+}
+},
+{
+"id": "SOL-0712",
+"sym": "SOL",
+"ts": "2026-07-12T22:21:00+07:00",
+"cls": "bias",
+"dir": 1,
+"tf": "1D",
+"pxShown": 77.39,
+"levels": [
+{
+"v": 87.2,
+"role": "resistance (garis chart)",
+"src": "chart"
+}
+],
+"zones": [],
+"pat": [
+"trendline-support",
+"htf-bias"
+],
+"note": "Konsolidasi bearish yang rapi setelah rally, dianggap sehat; tren naik diharapkan lanjut.",
+"horizonDays": 30,
+"result": {
+"ts": "2026-07-27T05:57:00+07:00",
+"pxShown": 76.66,
+"note": "Magic line bertahan, rencana sama"
+},
+"flags": [
+"Tanpa trigger atau invalidasi eksplisit: hanya bias."
+]
+},
+{
+"id": "BTC-0712",
+"sym": "BTC",
+"ts": "2026-07-12T15:34:00+07:00",
+"cls": "notrade",
+"dir": 0,
+"tf": "4H",
+"pxShown": 64008.84,
+"levels": [],
+"zones": [
+{
+"lo": 64800,
+"hi": 66050,
+"role": "supply (oranye)",
+"src": "chart~"
+},
+{
+"lo": 59900,
+"hi": 60800,
+"role": "demand (biru)",
+"src": "chart~"
+},
+{
+"lo": 70000,
+"hi": 71200,
+"role": "supply atas (pink)",
+"src": "chart~"
+}
+],
+"pat": [
+"mid-range"
+],
+"note": "Level sama seperti biasa, tidak tertarik di tengah. Pemicu jelas.",
+"horizonDays": 3,
+"result": {
+"ts": "2026-07-14T01:00:00+07:00",
+"pxShown": 61900.01,
+"note": "Nice job and nice strategy"
+},
+"claims": [
+{
+"text": "Harga turun ke zona demand 59,9 sampai 60,8k",
+"level": 60800,
+"dir": -1,
+"conditional": true,
+"by": "2026-07-15T01:00:00+07:00"
+}
+]
+},
+{
+"id": "SOL-0625",
+"sym": "SOL",
+"ts": "2026-06-25T13:58:00+07:00",
+"cls": "setup",
+"dir": 1,
+"tf": "4H",
+"pxShown": 69.47,
+"levels": [
+{
+"v": 80.62,
+"role": "level (garis chart)",
+"src": "chart"
+}
+],
+"zones": [
+{
+"lo": 67.4,
+"hi": 68.6,
+"role": "demand biru",
+"src": "chart~"
+},
+{
+"lo": 82.5,
+"hi": 95,
+"role": "supply merah",
+"src": "chart~"
+}
+],
+"pat": [
+"sweep-reclaim"
+],
+"note": "Lanjut setelah menyentuh low dan sweep likuiditas? Tanya pendapat pengikut.",
+"horizonDays": 4,
+"result": {
+"ts": "2026-06-28T16:51:00+07:00",
+"pxShown": 71.76,
+"note": "Level bekerja; sempat kena SL kecil akibat sapuan BTC, masuk ulang lalu profit"
+},
+"flags": [
+"Ada trade yang kena SL sebelum akhirnya profit. Entry dan exit tidak dipublikasikan."
+]
+},
+{
+"id": "ETH-0620",
+"sym": "ETH",
+"ts": "2026-06-20T05:28:00+07:00",
+"cls": "scenario",
+"dir": 0,
+"tf": "2H",
+"pxShown": 1705.04,
+"levels": [
+{
+"v": 1714.08,
+"role": "garis biru",
+"src": "chart"
+}
+],
+"zones": [
+{
+"lo": 1705,
+"hi": 1725,
+"role": "zona atas",
+"src": "chart~"
+},
+{
+"lo": 1650,
+"hi": 1662,
+"role": "zona bawah",
+"src": "chart~"
+}
+],
+"pat": [
+"range-edges"
+],
+"note": "Pasar lambat dan berisik; hanya trigger probabilitas tinggi dengan invalidasi sederhana.",
+"horizonDays": 3,
+"result": {
+"ts": "2026-06-22T16:30:00+07:00",
+"pxShown": 1746.45,
+"note": "Berhasil dua kali; tunggu close Senin untuk trigger baru"
+}
+},
+{
+"id": "FLOKI-0618",
+"sym": "FLOKI",
+"ts": "2026-06-18T19:43:00+07:00",
+"cls": "bias",
+"dir": 1,
+"tf": "2H",
+"pxShown": 2.592e-05,
+"levels": [
+{
+"v": 3.785e-05,
+"role": "target (garis biru)",
+"src": "chart"
+}
+],
+"zones": [
+{
+"lo": 2.54e-05,
+"hi": 2.6e-05,
+"role": "demand hijau",
+"src": "chart~"
+}
+],
+"pat": [
+"trendline-break"
+],
+"note": "Masih di dalam posisi, keyakinan masih tinggi.",
+"horizonDays": 3,
+"result": {
+"ts": "2026-06-19T04:49:00+07:00",
+"pxShown": 2.699e-05,
+"note": "Kartu Bybit 1000FLOKIUSDT Long 15x, ROI +49,50%, entry 0,02611"
+},
+"flags": [
+"Aritmetika kartu masuk akal: +3,37% x 15 sekitar 50 persen setelah biaya.",
+"Entry kartu sedikit di atas harga chart post: entry sebelum post."
+]
+}
+]
+}
