@@ -50,7 +50,7 @@ footer{max-width:800px;margin:30px auto;padding:0 16px;color:var(--mut);font-siz
 </style></head><body>
 <header><h1 id="wm" aria-label="asgracrypto"></h1>
 <form id="sf"><input id="q" list="dl" placeholder="Cari koin, contoh: BTC atau SOL" autocomplete="off" enterkeyhint="search"><datalist id="dl"></datalist></form></header>
-<nav id="tabs"><button data-t="home" class="on">Ringkasan</button><button data-t="setup">Setup</button><button data-t="watch">Pantauan</button><button data-t="rule">Strategi</button></nav>
+<nav id="tabs"><button data-t="home" class="on">Ringkasan</button><button data-t="setup">Setup</button><button data-t="watch">Pantauan</button><button data-t="rule">Strategi</button><button data-t="uji">Uji</button></nav>
 <main>
 <div id="al"></div>
 <div class="bar"><button class="p" id="go">Pindai ulang</button><span id="st" class="m"></span></div><div id="pg"><i></i></div>
@@ -76,12 +76,18 @@ footer{max-width:800px;margin:30px auto;padding:0 16px;color:var(--mut);font-siz
 <p class="m"><span class="ch ok">Dari Eliz</span> disebut langsung di materi. <span class="ch wait">Tafsiran</span> angka atau rumus pilihan saya.</p>
 <ul id="rl" style="padding-left:18px"></ul>
 </section>
+<section id="t-uji" hidden>
+<p class="m">Menguji engine pada waktu asli post Eliz. Engine hanya diberi data sampai detik post. Dataset berisi post pilihan Eliz sendiri, jadi ini mengukur apakah engine melihat yang dia lihat, bukan membuktikan profit. Pembanding acak mengukur apakah tanggal Eliz lebih baik dari tanggal sembarang.</p>
+<div class="bar"><button class="p" id="ujgo">Jalankan uji dataset</button><button class="p" id="ujbl">Uji pembanding acak</button><button class="p" id="ujcp" disabled>Salin hasil</button></div>
+<div id="ujst" class="m"></div><div id="ujsum"></div><div id="ujlist"></div>
+</section>
 </main>
 <footer>Alat bantu riset, bukan saran finansial. Level dan rencana dihitung otomatis dari data Binance dan tidak menggantikan penilaian sendiri. Hasil trader lain tidak menjamin hasil kamu.</footer>
 <dialog id="dg"></dialog>
 
 <script type="module">
 import {bj,kl,NOT,fmt as f,analyze,alertList} from './engine.mjs';
+import {runDataset,runBaseline,summarize,simStats} from './validate.mjs';
 const $=s=>document.querySelector(s),SD=['turun','datar','naik'];
 const ld=k=>{try{return localStorage.getItem(k)}catch(e){return null}},sv=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
 let all=[],btc=null,flt='all',extra=[],cur=null,tfv='4h';
@@ -189,5 +195,28 @@ async function scan(){const b=$('#go');b.disabled=true;all=[];extra=[];$('#pg i'
   $('#st').textContent=`Selesai: ${all.filter(r=>r.best).length} koin punya setup, ${all.length} koin dipantau.`;
  }catch(e){$('#st').textContent='Semua server Binance gagal dijangkau ('+(e&&e.name==='TimeoutError'?'timeout':e&&e.message)+'). Coba ganti jaringan atau VPN.'}
  $('#pg i').style.width='100%';b.disabled=false}
+// Tab Uji: engine vs post Eliz (lihat validate.mjs dan eliz-dataset.json)
+let uj=null,ds0=null,ujBl=null;
+const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const VC={sama:'ok',sebagian:'wait',beda:'S',berlawanan:'S','tidak terdeteksi':'S',dilewati:''};
+const ujCard=x=>{if(x.error)return`<div class="c"><div class="t"><h3>${x.id}</h3><span class="ch wait">${x.optional?'tidak tersedia':'error'}</span></div><div class="m">${esc(x.error)}</div></div>`;
+ const b=x.engine.best,cl=(x.claims||[]).map(c=>`<div class="m">Klaim${c.info?' (info)':c.conditional?' (bersyarat)':''}: ${esc(c.text)}: <b>${c.verdict}</b>, capaian maks ${c.ach}%</div>`).join(''),
+ fl=[...x.flags,...(x.tsSuspect?[`Harga chart ${x.pxShown} vs Binance ${f(x.px)} (${x.pxDiff}%): waktu atau sumber mungkin salah`]:[]),...(x.result&&x.result.tsSuspect?[`Harga di post hasil ${x.result.pxShown} vs Binance ${f(x.result.pxActual)} (${x.result.pxDiff}%): waktu post hasil mungkin salah${x.result.altDiff!=null?`; terhadap tanggal di chart selisih ${x.result.altDiff}%`:''}`]:[])];
+ return`<article class="c"><div class="t"><h3>${x.id}</h3><span><span class="ch">${x.cls}${x.dir?x.dir>0?' long':' short':''}</span><span class="ch ${VC[x.grade.verdict]}">${x.grade.verdict}</span></span></div>
+<div class="m">Eliz: ${esc(x.note)}</div><div class="m">Engine: ${b?`${b.side>0?'long':'short'} ${b.tf}, ${esc(b.why)}, entry ${f(b.entry)}, SL ${f(b.sl)}, ${b.rr.toFixed(1)}R`:esc(x.engine.st)}. ${esc(x.grade.note)}.</div>
+${x.levels&&x.levels.total?`<div class="m">Level cocok: ${x.levels.hit} dari ${x.levels.total}${x.levels.miss.length?'. Meleset: '+esc(x.levels.miss.join('; ')):''}</div>`:''}${cl}
+${x.sim?`<div class="m">Simulasi plan engine: ${x.sim.st}, ${x.sim.R.toFixed(2)}R</div>`:''}${fl.map(t=>`<div class="w">${esc(t)}</div>`).join('')}</article>`};
+const ujSum=()=>{const s=summarize(uj.res),e=s.sim;$('#ujsum').innerHTML=`<div class="c"><div class="g4"><div><span>Skor kecocokan</span>${s.skor==null?'n/a':s.skor+'%'}</div><div><span>Sama, sebagian, beda</span>${s.sama}, ${s.sebagian}, ${s.beda}</div><div><span>Level cocok</span>${s.levelHit} dari ${s.levelTotal}</div><div><span>Klaim terverifikasi</span>${s.klaimOk} dari ${s.klaimTotal}</div></div>
+<div class="m">Simulasi plan engine pada tanggal Eliz: ${e.setup} setup, ${e.terisi} terisi, ${e.win} menang, rata-rata ${e.avgR==null?'n/a':e.avgR+'R'}.${ujBl?` Pembanding acak: ${ujBl.setup} setup dari ${ujBl.n} sampel, ${ujBl.terisi} terisi, ${ujBl.win} menang, rata-rata ${ujBl.avgR==null?'n/a':ujBl.avgR+'R'}.`:''}</div>
+${s.waktuMencurigakan.length?`<div class="w">Harga chart tidak cocok dengan Binance pada: ${s.waktuMencurigakan.join(', ')}</div>`:''}</div>`};
+const ujLoad=async()=>ds0||(ds0=await (await fetch('./eliz-dataset.json')).json());
+$('#ujgo').onclick=async()=>{const b=$('#ujgo');b.disabled=true;$('#ujlist').innerHTML='';
+ try{const ds=await ujLoad(),res=await runDataset(ds,{onProgress:(i,n,id)=>$('#ujst').textContent=`Menguji ${i} dari ${n}: ${id}`});uj={res,summary:summarize(res)};ujBl=null;ujSum();$('#ujlist').innerHTML=res.map(ujCard).join('');$('#ujst').textContent='Selesai.';$('#ujcp').disabled=false}
+ catch(x){$('#ujst').textContent='Gagal: '+x.message}b.disabled=false};
+$('#ujbl').onclick=async()=>{if(!uj){$('#ujst').textContent='Jalankan uji dataset dulu.';return}const b=$('#ujbl');b.disabled=true;
+ try{const bl=await runBaseline(await ujLoad(),{n:60,onProgress:(i,n)=>$('#ujst').textContent=`Pembanding acak ${i} dari ${n}`});ujBl=simStats(bl);uj.baseline=bl;ujSum();$('#ujst').textContent='Selesai.'}
+ catch(x){$('#ujst').textContent='Gagal: '+x.message}b.disabled=false};
+$('#ujcp').onclick=async()=>{const t=JSON.stringify(uj);try{await navigator.clipboard.writeText(t)}catch(x){const a=document.createElement('textarea');a.value=t;document.body.append(a);a.select();document.execCommand('copy');a.remove()}$('#ujst').textContent='Hasil disalin.'};
+
 $('#go').onclick=scan;showAl();scan();
 </script></body></html>
