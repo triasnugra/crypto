@@ -2,14 +2,15 @@
 "meta": {
 "sumber": "PDF 1: Analisis dan hasil analisis dari eliz883",
 "zona_waktu": "WIB (+07:00)",
-"versi": 3,
+"versi": 4,
 "catatan": [
 "src 'teks' = angka disebut di teks post. 'chart' = label harga di sumbu chart. 'chart~' = perkiraan dari posisi pixel, toleransi sekitar 2 persen.",
 "cls: setup = ada pemicu atau level dan arah. bias = arah saja. notrade = Eliz diam. scenario = dua arah atau level saja. invest = spot jangka panjang. context = tanpa teks.",
 "Level dengan role berawalan 'target' tidak ikut penilaian level (hanya info).",
 "pxShown = harga di chart post. Dipakai untuk mengecek apakah tanggal dan jam di dataset cocok dengan data Binance.",
 "Dataset berisi post pilihan Eliz sendiri (cenderung yang berhasil). Cocok untuk mengecek apakah engine melihat yang dia lihat, bukan untuk membuktikan profit.",
-"Entri SUI, NEAR, BTC-0916 berasal dari Discord Eliz, bukan dari PDF 1. NEAR ditulis akun asisten. Klaim kind=close menilai apakah ada close (1D, 1W) melewati level, dan selalu bersyarat."
+"Entri SUI, NEAR, BTC-0916 berasal dari Discord Eliz, bukan dari PDF 1. NEAR ditulis akun asisten. Klaim kind=close menilai apakah ada close (1D, 1W) melewati level, dan selalu bersyarat.",
+"v4: rentang pencarian jam SUI diperluas; penjelasan selisih harga PHA dan ALICE diperbarui dari data hasil uji."
 ]
 },
 "entries": [
@@ -113,8 +114,8 @@
 }
 ],
 "flags": [
-"Tanggal di chart hasil (sab 03 Okt) berbeda dari tanggal post (25 Sep).",
-"Angka 200 persen diukur dari dasar zona 0,0256, bukan harga saat post 0,0273 (sekitar +181 persen)."
+"Angka 200 persen diukur dari dasar zona 0,0256, bukan harga saat post 0,0273 (sekitar +181 persen).",
+"Kursor chart hasil menunjukkan 03 Okt, kemungkinan di area kosong kanan chart. Data Binance memperlihatkan harga 0,0767 tercapai sekitar 25 Sep pukul 21:00 WIB, tepat saat post: lonjakan sesaat, bukan tanggal yang salah. Klaim 200 persen dari dasar zona terverifikasi."
 ]
 },
 {
@@ -161,7 +162,8 @@
 ],
 "flags": [
 "ROI 257,39% pada 10x tidak cocok dengan entry ke harga sekarang di kartu (+34,95% x 10 = sekitar 350%).",
-"Entry kartu 0,14829 lebih rendah dari harga chart post 0,1573: entry kemungkinan sebelum post."
+"Entry kartu 0,14829 lebih rendah dari harga chart post 0,1573: entry kemungkinan sebelum post.",
+"Harga kartu Bybit 0,20012 cocok dengan lonjakan sesaat sekitar 1 Okt pukul 21:00-22:00 WIB; selisih dengan harga Binance 15 menit sebelumnya (0,171) berasal dari lonjakan itu, bukan waktu yang salah."
 ]
 },
 {
@@ -814,8 +816,8 @@
 "sym": "SUI",
 "ts": "2026-09-17T12:00:00+07:00",
 "probe": [
-"2026-09-17T00:00:00+07:00",
-"2026-09-18T00:00:00+07:00"
+"2026-09-16T00:00:00+07:00",
+"2026-09-20T00:00:00+07:00"
 ],
 "cls": "setup",
 "dir": 1,
@@ -881,9 +883,9 @@
 }
 ],
 "flags": [
-"Tanggal post 26 Sep 2026, tetapi chart bertanggal 17 Sep 2026. Jam analisis diestimasi dari harga chart (0,8122) pada 17 Sep; kalau harga itu muncul beberapa kali hari itu, jam bisa meleset.",
 "Alat posisi di chart: entry sekitar 0,7947, stop 0,6323, target 2,4621 (sekitar 10R). Eliz sendiri menyebut ini bukan setup biasa: berhasil besar atau nol.",
-"Kategori asimetris (seperti TAO): jangan dibandingkan dengan setup scalping."
+"Kategori asimetris (seperti TAO): jangan dibandingkan dengan setup scalping.",
+"Tanggal post 26 Sep 2026; chart dikatakan bertanggal 17 Sep 2026. Uji pertama tidak menemukan harga 0,8122 di Binance pada 17 Sep (terdekat 0,7346, selisih -9,55%), jadi rentang pencarian jam diperluas ke 16-20 Sep. Hasil pencarian ini menunjukkan tanggal chart sebenarnya, dan harus dibaca bersama selisih harga yang dilaporkan."
 ]
 },
 {
