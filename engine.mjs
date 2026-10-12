@@ -35,7 +35,7 @@ function frame(b0,px,C,bs,lg,tlbOn){
  const PH=piv(b,k,n-look,n-skip,'h',1),PL=piv(b,k,n-look,n-skip,'l',0);
  const tL=PL.filter(i=>b[i].l<=L+bd).length,tH=PH.filter(i=>b[i].h>=H-bd).length;
  // Double Deviation: 2 sweep, sweep ke-2 lebih dangkal, keduanya reclaim
- const W=Math.round(look*1.2),Zs=Math.min(...b.slice(n-W).map(q=>q.c)),Zh=Math.max(...b.slice(n-W).map(q=>q.c));
+ const W=Math.min(Math.round(look*1.2),n),Zs=Math.min(...b.slice(n-W).map(q=>q.c)),Zh=Math.max(...b.slice(n-W).map(q=>q.c));
  const sw=(z,up)=>{const S=[];for(let i=n-W;i<n;i++){const q=b[i];if(up?q.l<z*.998&&q.c>z:q.h>z*1.002&&q.c<z)if(!S.length||i-S.at(-1)>=3)S.push(i)}return S};
  const sU=sw(Zs,1),sD=sw(Zh,0);
  const ddUp=sU.length>=2&&sU.at(-1)>=n-rec*2&&b[sU.at(-1)].l>b[sU.at(-2)].l&&px>Zs,ddDn=sD.length>=2&&sD.at(-1)>=n-rec*2&&b[sD.at(-1)].h<b[sD.at(-2)].h&&px<Zh;
@@ -122,7 +122,7 @@ export function analyze(sym,d,f,ctx={}){
    setups.push(p)}
  setups.sort((a,b)=>b.sc-a.sc||a.dist-b.dist);
  const fr=f4||f1,st=setups.length?'Setup aktif':fr.flat?'Harga datar':fr.mid?'Tengah range: tanpa trade':fr.pos<.2?'Dekat low: tunggu sweep dan reclaim':fr.pos>.8?'Dekat high: tunggu sweep atau breakout dan retest':'Belum ada pemicu';
- return{s:sym,px,qv:ctx.qv||0,bias:bs,f4,f1,htf,wk:lg?null:keyLevels(d,px),setups,best:setups[0]||null,st,ret30:px/dd[dd.length-30].c-1,
+ return{s:sym,px,qv:ctx.qv||0,bias:bs,f4,f1,htf,wk:lg?null:keyLevels(d,px),setups,best:setups[0]||null,st,ret30:px/(dd[Math.max(0,dd.length-30)]||{c:px}).c-1,
   ch4:f.slice(-120),off4:f.length-120,ch1:d.slice(-90),off1:d.length-90}}
 
 export function alertList(){const d=new Date(),iso=d.toISOString().slice(0,10),md=iso.slice(5),dw=d.getUTCDay(),tm=new Date(+d+864e5),A=[];

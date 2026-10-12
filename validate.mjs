@@ -1,7 +1,7 @@
 // asgracrypto: uji engine.mjs terhadap post Eliz. Jalan di browser dan Node (node validate.mjs [--baseline]).
 // Engine hanya diberi data sampai detik post. Candle terakhir dibangun ulang dari data 15 menit agar tidak mengintip masa depan.
 import {bj,analyze,fmt} from './engine.mjs';
-export const VERSION='v5.2 (tertutup dan terbuka dipisah, ada total; v4-v6 eksperimen; default situs = v1)';
+export const VERSION='v5.3 (grade lebih ketat, level tanpa entry/SL engine, klaim berbasis harga chart, median benar; v4-v6 eksperimen; default situs = v1)';
 const M15=9e5,H1=36e5,DAY=864e5,T=s=>typeof s==='number'?s:Date.parse(s),pc=(a,b)=>(a/b-1)*100;
 const mk=a=>({t:a[0],o:+a[1],h:+a[2],l:+a[3],c:+a[4],v:+a[5]});
 const K=async(p,iv,q)=>(await bj(`klines?symbol=${p}&interval=${iv}&${q}`)).map(mk);
@@ -41,18 +41,18 @@ export function sim(p,fc){const L=p.side==1,CL=p.stopMode==='close',tg=p.tg.map(
   else if(h1){stage=1;if(hf)return{st:'target akhir',R:.7*r1+.3*rf,jam}}}
  const o=p.side*(fc.at(-1).c-p.entry)/p.risk;return{st:'masih terbuka',R:stage?.7*r1+.3*o:o,jam:fc.length-i0}}
 
-function claim(c,e,r,d,fc,rts,ts){const dir=c.dir??e.dir??1,L=dir==1,base=c.base??(c.altBase?Math.min(...d.slice(-31,-1).map(q=>q.l)):r.px),
+function claim(c,e,r,d,fc,rts,ts){const dir=c.dir??e.dir??1,L=dir==1,base=c.base??(c.altBase?Math.min(...d.slice(-31,-1).map(q=>q.l)):(e.pxShown??r.px)),basis=c.base!=null?'level':c.altBase?'low 30 hari':e.pxShown!=null?'chart':'binance',
  by=T(c.by||(e.result&&e.result.ts)||ts)+H1;
  if(c.kind==='close'){ // klaim berbasis close (invalidasi atau konfirmasi): dir -1 = ada close di bawah level, dir 1 = ada close di atas level
   const o={text:c.text,info:!!c.info,conditional:true,base:r.px,level:c.level,ach:null},tf=(c.tf||'1D').toUpperCase(),hit=fc.find(q=>isClose(q,tf)&&(dir<0?q.c<c.level:q.c>c.level));
   return fc.length?{...o,verdict:hit?'terjadi':'tidak terjadi',at:hit?new Date(hit.t).toISOString():null}:{...o,verdict:'tanpa data',at:null}}
- const lvl=c.level??base*(1+dir*.9*c.pct/100),w=fc.filter(q=>q.t<=by),o={text:c.text,info:!!c.info,conditional:!!c.conditional,base,level:lvl};
+ const lvl=c.level??base*(1+dir*.9*c.pct/100),w=fc.filter(q=>q.t<=by),o={text:c.text,info:!!c.info,conditional:!!c.conditional,base,basis,level:lvl};
  if(!fc.length)return{...o,ach:null,verdict:'tanpa data',at:null};
  const W=w.length?w:fc,ex=L?Math.max(...W.map(q=>q.h)):Math.min(...W.map(q=>q.l)),i=fc.findIndex(q=>L?q.h>=lvl:q.l<=lvl);
  return{...o,ach:+(dir*pc(ex,base)).toFixed(1),verdict:i<0?'tidak tercapai':fc[i].t<=by?'tercapai tepat waktu':'tercapai, tapi setelah klaim',at:i<0?null:new Date(fc[i].t).toISOString()}}
 
 function engLevels(r){const o=[];for(const[n,fr]of[['4H',r.f4],['1D',r.f1]]){if(!fr)continue;o.push([fr.L,'low '+n],[fr.L+fr.bd,'atas demand '+n],[fr.M,'tengah '+n],[fr.H-fr.bd,'bawah supply '+n],[fr.H,'high '+n]);if(fr.mon)o.push([fr.mon.l,'Monday low'],[fr.mon.h,'Monday high'])}
- for(const s of r.setups)o.push([s.entry,'entry '+s.tf],[s.sl,'SL '+s.tf]);
+ // entry dan SL engine SENGAJA tidak dimasukkan: itu keluaran rencana, bukan level pasar. Memasukkannya membuat engine tampak 'menemukan' level Eliz hanya karena rencananya kebetulan dekat.
  if(r.wk){for(const[n,z]of[['supply',r.wk.sup],['demand',r.wk.dem]])if(z)o.push([z.lo,'weekly '+n+' bawah'],[z.hi,'weekly '+n+' atas'],[z.m,'weekly '+n]);o.push([r.wk.H,'weekly high 52m'],[r.wk.L,'weekly low 52m'])}
  return o}
 function lvCheck(e,r){const EL=engLevels(r),tol=Math.max(.012*r.px,r.f4?.A||0),W=[];
@@ -70,9 +70,12 @@ const PM={dev:'sweep-reclaim',tap:'sweep-reclaim',dd:'sweep-reclaim',mon:'sweep-
 export function grade(e,r,lv){const b=r.best,fr=r.f4||r.f1,S=r.setups,act=!!(b&&b.dist<=.5),same=S.filter(s=>s.side===e.dir),pk=new Set(same.map(s=>PM[s.kind])),patOk=(e.pat||[]).some(p=>pk.has(p)),dirOk=!!(b&&b.side===e.dir);let v,n='';
  if(e.cls==='setup'){v=dirOk&&patOk?'sama':dirOk||same.length?'sebagian':act?'berlawanan':'tidak terdeteksi';
   n=dirOk?(patOk?'arah dan pola sama':'arah sama, pola beda'):same.length?'ada setup searah tapi bukan yang terbaik':act?'engine aktif di arah sebaliknya':b?'hanya ada order tunda berlawanan':'engine tidak melihat pemicu ('+r.st+')'}
- else if(e.cls==='bias'){const x=act?b.side:r.bias;v=x===e.dir?'sama':x===0?'sebagian':'beda';n=act?'setup aktif engine: '+(b.side>0?'long':'short'):'struktur harian engine: '+['turun','datar','naik'][r.bias+1]}
- else if(e.cls==='notrade'){v=act?'beda':b||fr.mid||fr.flat?'sama':'sebagian';n=act?'engine memberi setup aktif padahal Eliz diam':b?'engine hanya menyiapkan order tunda di ekstrem':fr.mid?'engine juga di tengah range':'engine diam, tetapi harga tidak di tengah range'}
- else if(e.cls==='scenario'){const q=lv.total?lv.hit/lv.total:0;v=q>=.6?'sama':q>0?'sebagian':'tidak terdeteksi';n='dinilai dari kecocokan level, bukan arah'}
+ else if(e.cls==='bias'){ // 'sama' hanya bila ada setup aktif searah. Struktur harian searah tanpa pemicu = 'sebagian' (engine tidak punya trade).
+  if(act){v=b.side===e.dir?'sama':'beda';n='setup aktif engine: '+(b.side>0?'long':'short')}
+  else{v=r.bias===e.dir||r.bias===0?'sebagian':'beda';n='struktur harian engine: '+['turun','datar','naik'][r.bias+1]+(r.bias===e.dir?' (searah, tetapi engine tanpa pemicu aktif)':'')}}
+ else if(e.cls==='notrade'){ // 'sama' hanya bila engine juga diam di tengah/datar. Order tunda di ekstrem (arah apa pun) = 'sebagian'.
+  v=act?'beda':fr.mid||fr.flat?'sama':'sebagian';n=act?'engine memberi setup aktif padahal Eliz diam':fr.mid?'engine juga di tengah range':fr.flat?'engine juga melihat harga datar':b?'engine hanya menyiapkan order tunda di ekstrem (arah tidak dibandingkan)':'engine diam, tetapi harga tidak di tengah range'}
+ else if(e.cls==='scenario'){const q=lv.total?lv.hit/lv.total:0;v=lv.total>=2&&q>=.6?'sama':q>0?'sebagian':'tidak terdeteksi';n='dinilai dari kecocokan level, bukan arah'+(lv.total<2?' (hanya '+lv.total+' level: maksimal sebagian)':'')}
  else v='dilewati';
  return{verdict:v,note:n,patOk,dirOk}}
 
@@ -133,9 +136,9 @@ export const bl2=bl=>{const ok=bl.filter(x=>!x.error),st=(L,k)=>simStats(L.map(x
 // di jendela uji, jadi dilaporkan terpisah dan TIDAK ikut rata-rata, median, atau jumlah menang. minR = kerugian terburuk di trade tertutup.
 const CLOSED=new Set(['SL','target','target akhir','TP1 lalu stop di entry']);
 export const simStats=L=>{const S=L.filter(x=>x.sim),f=S.filter(x=>x.sim.st!=='tidak terisi'),C=f.filter(x=>CLOSED.has(x.sim.st)),O=f.filter(x=>x.sim.st==='masih terbuka'),
- R=a=>a.map(x=>x.sim.R).sort((p,q)=>p-q),avg=a=>a.length?+(a.reduce((t,v)=>t+v,0)/a.length).toFixed(2):null,rc=R(C),ro=R(O);
+ R=a=>a.map(x=>x.sim.R).sort((p,q)=>p-q),med=a=>a.length?+(a.length%2?a[(a.length-1)/2]:(a[a.length/2-1]+a[a.length/2])/2).toFixed(2):null,avg=a=>a.length?+(a.reduce((t,v)=>t+v,0)/a.length).toFixed(2):null,rc=R(C),ro=R(O);
  return{n:L.length,setup:S.length,terisi:f.length,tertutup:C.length,terbuka:O.length,win:C.filter(x=>x.sim.R>0).length,sl:C.filter(x=>x.sim.st==='SL').length,
-  avgR:avg(rc),medR:rc.length?+rc[Math.floor(rc.length/2)].toFixed(2):null,tanpaTerbaik:avg(rc.slice(0,-1)),minR:rc.length?+rc[0].toFixed(2):null,
+  avgR:avg(rc),medR:med(rc),tanpaTerbaik:avg(rc.slice(0,-1)),minR:rc.length?+rc[0].toFixed(2):null,
   bukaR:avg(ro),bukaPos:O.filter(x=>x.sim.R>0).length,avgTotal:avg(R(f))}}; // avgTotal = rata-rata R semua trade terisi, posisi terbuka dinilai pada harga terakhir
 
 const core=L=>{const g=L.filter(x=>x.grade.verdict!=='dilewati'),c=k=>g.filter(x=>x.grade.verdict===k).length,lv=L.filter(x=>x.levels&&x.levels.total);
