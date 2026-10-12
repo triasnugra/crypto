@@ -1,7 +1,7 @@
 // asgracrypto: uji engine.mjs terhadap post Eliz. Jalan di browser dan Node (node validate.mjs [--baseline]).
 // Engine hanya diberi data sampai detik post. Candle terakhir dibangun ulang dari data 15 menit agar tidak mengintip masa depan.
 import {bj,analyze,fmt} from './engine.mjs';
-export const VERSION='v5 (v1 stop wick; v4 stop close; v5 dan v6 stop close + batas rugi keras 2R dan 3R; default situs = v1)';
+export const VERSION='v5.2 (tertutup dan terbuka dipisah, ada total; v4-v6 eksperimen; default situs = v1)';
 const M15=9e5,H1=36e5,DAY=864e5,T=s=>typeof s==='number'?s:Date.parse(s),pc=(a,b)=>(a/b-1)*100;
 const mk=a=>({t:a[0],o:+a[1],h:+a[2],l:+a[3],c:+a[4],v:+a[5]});
 const K=async(p,iv,q)=>(await bj(`klines?symbol=${p}&interval=${iv}&${q}`)).map(mk);
@@ -116,8 +116,8 @@ export async function runBaseline(ds,{n=200,seed=7,from='2026-06-20',to='2026-09
 
 // Sampel acak yang berdekatan (koin, sisi, pola, timeframe sama, selisih <=48 jam) biasanya trade yang sama dihitung berkali-kali.
 // Karena itu perbandingan dihitung per KLASTER, dengan bootstrap (seed tetap) untuk selang kepercayaan 95 persen.
-export function clusterDiff(bl,k,{iters=2000,seed=11}={}){
- const P=bl.filter(x=>!x.error&&x.v1&&x.v1.sim&&x.v1.sim.st!=='tidak terisi'&&x[k]&&x[k].sim).map(x=>({key:x.sym+x.v1.side+x.v1.kind+x.v1.tf,t:Date.parse(x.ts),a:x.v1.sim.R,b:x[k].sim.R})).sort((p,q)=>p.key<q.key?-1:p.key>q.key?1:p.t-q.t);
+export function clusterDiff(bl,k,{iters=2000,seed=11,closed=false}={}){
+ const P=bl.filter(x=>!x.error&&x.v1&&x.v1.sim&&x.v1.sim.st!=='tidak terisi'&&x[k]&&x[k].sim&&(!closed||(CLOSED.has(x.v1.sim.st)&&CLOSED.has(x[k].sim.st)))).map(x=>({key:x.sym+x.v1.side+x.v1.kind+x.v1.tf,t:Date.parse(x.ts),a:x.v1.sim.R,b:x[k].sim.R})).sort((p,q)=>p.key<q.key?-1:p.key>q.key?1:p.t-q.t);
  const C=[];let cur=[];for(const x of P){if(cur.length&&cur[0].key===x.key&&x.t-cur.at(-1).t<=48*H1)cur.push(x);else{if(cur.length)C.push(cur);cur=[x]}}if(cur.length)C.push(cur);
  const m=a=>a.reduce((s,v)=>s+v,0)/a.length,K=C.map(c=>({a:m(c.map(x=>x.a)),b:m(c.map(x=>x.b))})),d=K.map(x=>x.b-x.a);
  if(!K.length)return{trade:0,klaster:0};
@@ -126,12 +126,17 @@ export function clusterDiff(bl,k,{iters=2000,seed=11}={}){
  const r2=v=>+v.toFixed(2);
  return{trade:P.length,klaster:K.length,rataV1:r2(m(K.map(x=>x.a))),rataVar:r2(m(K.map(x=>x.b))),selisih:r2(m(d)),ci:[r2(bs[Math.floor(.025*iters)]),r2(bs[Math.floor(.975*iters)])],lebihBaik:d.filter(x=>x>1e-9).length,lebihBuruk:d.filter(x=>x<-1e-9).length}}
 const pair=(ok,k)=>{const par=ok.filter(x=>x.v1&&x.v1.sim&&x.v1.sim.st!=='tidak terisi'&&x[k]&&x[k].sim),dif=par.filter(x=>Math.abs(x[k].sim.R-x.v1.sim.R)>1e-9),sum=a=>+a.reduce((s,v)=>s+v,0).toFixed(2);
- return{n:par.length,beda:dif.length,lebihBaik:dif.filter(x=>x[k].sim.R>x.v1.sim.R).length,lebihBuruk:dif.filter(x=>x[k].sim.R<x.v1.sim.R).length,selisihR:sum(dif.map(x=>x[k].sim.R-x.v1.sim.R)),totalV1:sum(par.map(x=>x.v1.sim.R)),totalVar:sum(par.map(x=>x[k].sim.R))}};
+ return{n:par.length,tertutupKeduanya:par.filter(x=>CLOSED.has(x.v1.sim.st)&&CLOSED.has(x[k].sim.st)).length,slJadiTerbuka:par.filter(x=>x.v1.sim.st==='SL'&&x[k].sim.st==='masih terbuka').length,beda:dif.length,lebihBaik:dif.filter(x=>x[k].sim.R>x.v1.sim.R).length,lebihBuruk:dif.filter(x=>x[k].sim.R<x.v1.sim.R).length,selisihR:sum(dif.map(x=>x[k].sim.R-x.v1.sim.R)),totalV1:sum(par.map(x=>x.v1.sim.R)),totalVar:sum(par.map(x=>x[k].sim.R))}};
 export const bl2=bl=>{const ok=bl.filter(x=>!x.error),st=(L,k)=>simStats(L.map(x=>x[k]||{})),V=['v4','v5','v6'];
- return{n:bl.length,v1:st(bl,'v1'),v4:st(bl,'v4'),v5:st(bl,'v5'),v6:st(bl,'v6'),par:Object.fromEntries(V.map(k=>[k,pair(ok,k)])),kl:Object.fromEntries(V.map(k=>[k,clusterDiff(ok,k)]))}};
-// Median dan rata-rata tanpa trade terbaik, supaya satu trade besar tidak menipu rata-rata. minR = kerugian terburuk (di mode close bisa lebih dari 1R).
-export const simStats=L=>{const S=L.filter(x=>x.sim),f=S.filter(x=>x.sim.st!=='tidak terisi'),R=f.map(x=>x.sim.R).sort((a,b)=>a-b),avg=a=>a.length?+(a.reduce((s,v)=>s+v,0)/a.length).toFixed(2):null;
- return{n:L.length,setup:S.length,terisi:f.length,win:f.filter(x=>x.sim.R>0).length,sl:f.filter(x=>x.sim.st==='SL').length,avgR:avg(R),tanpaTerbaik:avg(R.slice(0,-1)),medR:R.length?+R[Math.floor(R.length/2)].toFixed(2):null,minR:R.length?+R[0].toFixed(2):null}};
+ return{n:bl.length,v1:st(bl,'v1'),v4:st(bl,'v4'),v5:st(bl,'v5'),v6:st(bl,'v6'),par:Object.fromEntries(V.map(k=>[k,pair(ok,k)])),kl:Object.fromEntries(V.map(k=>[k,clusterDiff(ok,k)])),klT:Object.fromEntries(V.map(k=>[k,clusterDiff(ok,k,{closed:true})])),err:bl.length-ok.length}};
+// Trade TERTUTUP: SL, target, target akhir, atau TP1 lalu stop di entry. Trade "masih terbuka" belum terealisasi: R-nya hanya nilai pada harga terakhir
+// di jendela uji, jadi dilaporkan terpisah dan TIDAK ikut rata-rata, median, atau jumlah menang. minR = kerugian terburuk di trade tertutup.
+const CLOSED=new Set(['SL','target','target akhir','TP1 lalu stop di entry']);
+export const simStats=L=>{const S=L.filter(x=>x.sim),f=S.filter(x=>x.sim.st!=='tidak terisi'),C=f.filter(x=>CLOSED.has(x.sim.st)),O=f.filter(x=>x.sim.st==='masih terbuka'),
+ R=a=>a.map(x=>x.sim.R).sort((p,q)=>p-q),avg=a=>a.length?+(a.reduce((t,v)=>t+v,0)/a.length).toFixed(2):null,rc=R(C),ro=R(O);
+ return{n:L.length,setup:S.length,terisi:f.length,tertutup:C.length,terbuka:O.length,win:C.filter(x=>x.sim.R>0).length,sl:C.filter(x=>x.sim.st==='SL').length,
+  avgR:avg(rc),medR:rc.length?+rc[Math.floor(rc.length/2)].toFixed(2):null,tanpaTerbaik:avg(rc.slice(0,-1)),minR:rc.length?+rc[0].toFixed(2):null,
+  bukaR:avg(ro),bukaPos:O.filter(x=>x.sim.R>0).length,avgTotal:avg(R(f))}}; // avgTotal = rata-rata R semua trade terisi, posisi terbuka dinilai pada harga terakhir
 
 const core=L=>{const g=L.filter(x=>x.grade.verdict!=='dilewati'),c=k=>g.filter(x=>x.grade.verdict===k).length,lv=L.filter(x=>x.levels&&x.levels.total);
  return{dinilai:g.length,sama:c('sama'),sebagian:c('sebagian'),beda:c('beda')+c('berlawanan')+c('tidak terdeteksi'),
