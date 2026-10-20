@@ -1,0 +1,32 @@
+{
+  "_note": "cardSelector hanya dokumentasi: struktur DOM Mesin 1 diverifikasi dari data/discovery/crypto/rendered.html (lihat docs/VERIFIED.md).",
+  "crypto": {
+    "label": "Mesin 1",
+    "url": "https://triasnugra.github.io/crypto/",
+    "scanButtonText": "Pindai ulang",
+    "cardSelector": "#setups > article.c",
+    "noSetupMarkerText": null,
+    "gotoTimeoutMs": 45000,
+    "scanTimeoutMs": 120000,
+    "quietMs": 4000,
+    "trackPresence": true,
+    "revisionPolicy": true,
+    "engineFiles": [
+      "https://triasnugra.github.io/crypto/engine.mjs"
+    ]
+  },
+  "tn": {
+    "label": "Mesin 2",
+    "url": "https://triasnugra.github.io/tn/",
+    "journalUrl": "https://triasnugra.github.io/tn/data/journal.json",
+    "forwardReportUrl": "https://triasnugra.github.io/tn/data/forward-report.json",
+    "fetchTimeoutMs": 30000,
+    "retries": 3,
+    "cumulativeSource": true,
+    "coreUrl": "https://triasnugra.github.io/tn/core.mjs"
+  },
+  "view": {
+    "url": "https://triasnugra.github.io/view/",
+    "note": "Dashboard harga; tidak dipakai sebagai sumber candle."
+  }
+}
