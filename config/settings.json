@@ -1,0 +1,39 @@
+{
+  "entryTtlHours": 72,
+  "maxHoldDays": 30,
+  "sanityMaxDeviation": 0.5,
+  "minSamplePerEngine": 150,
+  "bootstrapIterations": 5000,
+  "pairWindowMinutes": 120,
+  "cluster": {
+    "windowHours": 24,
+    "entryTolerance": 0.01
+  },
+  "cancelPatterns": [
+    "batal",
+    "cancel",
+    "dibatalkan",
+    "invalidated"
+  ],
+  "rawRetentionPerEngine": 40,
+  "binanceBaseUrls": [
+    "https://data-api.binance.vision",
+    "https://api.binance.com"
+  ],
+  "revision": {
+    "entryTolerance": 0.01,
+    "cooldownHours": 24
+  },
+  "costs": {
+    "feePctPerSide": 0.05,
+    "slipPct": 0.05,
+    "sumber": "forward-lib.mjs (protokol Mesin 2)"
+  },
+  "minIndependentDays": 20,
+  "minDaysForCI": 5,
+  "gate": {
+    "minTrades": 150,
+    "minWeeks": 20,
+    "unit": "minggu kalender ISO (UTC)"
+  }
+}
