@@ -1,0 +1,12 @@
+{
+  "name": "crypto-engine",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "test": "node --test \"test/*.test.mjs\"",
+    "journal": "node scripts/generate-journal.mjs",
+    "verify": "node scripts/verify-journal.mjs",
+    "live": "node scripts/check-live.mjs"
+  }
+}
