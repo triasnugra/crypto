@@ -1,0 +1,29 @@
+name: Journal Mesin Crypto
+on:
+  workflow_dispatch:
+  schedule: [{ cron: '12 */4 * * *' }]
+permissions: { contents: write }
+concurrency: { group: journal, cancel-in-progress: false }
+jobs:
+  journal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Tes (gagal = jangan terbitkan)
+        run: node --test "test/*.test.mjs"
+      - name: Scan dan tulis data/journal.json
+        run: node scripts/generate-journal.mjs
+      - name: Verifikasi rantai hash
+        run: node scripts/verify-journal.mjs
+      - name: Commit data
+        if: always()
+        run: |
+          git config user.name "journal-bot"; git config user.email "bot@users.noreply.github.com"
+          [ -d data ] && git add -A data || true
+          git diff --cached --quiet && exit 0
+          git commit -m "journal: scan $(date -u +%FT%TZ)"
+          for i in 1 2 3; do git pull --rebase -X theirs origin "${GITHUB_REF_NAME}" && git push && exit 0; sleep $((i*5)); done
+          exit 1
