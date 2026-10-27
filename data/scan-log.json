@@ -223,5 +223,22 @@
   "revised": 9,
   "error": null,
   "durationMs": 3570
+ },
+ {
+  "t": 1793133708892,
+  "iso": "2026-10-27T20:41:48.892Z",
+  "engine": "a6aa2848cf79ffa1a7a1218935ecb9cd99b9310b",
+  "status": "OK",
+  "coins": 40,
+  "analyzed": 39,
+  "failed": [
+   "RWUSD"
+  ],
+  "setups": 22,
+  "added": 5,
+  "merged": 17,
+  "revised": 14,
+  "error": null,
+  "durationMs": 3127
  }
 ]
