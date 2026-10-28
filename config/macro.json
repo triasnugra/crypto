@@ -1,0 +1,11 @@
+{
+  "events": ["FOMC", "CPI"],
+  "mode": "alert",
+  "gateScope": "window",
+  "window": {
+    "FOMC": { "preMin": 120, "postMin": 240 },
+    "CPI": { "preMin": 60, "postMin": 180 }
+  },
+  "tzLabel": { "name": "WIB", "offsetMin": 420 },
+  "overrides": []
+}
