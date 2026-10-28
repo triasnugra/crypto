@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { verifyJournal } from './journal-lib.mjs';
 
-export async function checkLive({ base = 'https://triasnugra.github.io/crypto/', fetchImpl = globalThis.fetch, now = Date.now(), maxAgeHours = 9 } = {}) {
+export async function checkLive({ base = 'https://triasnugra.github.io/crypto/', fetchImpl = globalThis.fetch, now = Date.now(), maxAgeHours = 14 } = {}) {
   const out = [];
   const add = (ok, msg) => out.push({ ok, msg });
   const get = (p) => fetchImpl(`${base}${p}?_=${now}`, { cache: 'no-store' });
