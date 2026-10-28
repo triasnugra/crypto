@@ -1,0 +1,30 @@
+name: Perbarui kalender makro (FOMC + CPI)
+
+# Mengambil jadwal resmi FOMC (federalreserve.gov) dan rilis CPI (bls.gov), lalu menyimpan ke data/macro-calendar.json.
+# Jalan tiap Senin dan bisa dijalankan manual. Gagal (merah) = sumber tidak terbaca; berkas lama TIDAK diubah.
+# Bila terus gagal: simpan halaman/ICS-nya lalu jalankan skrip dengan --fomc-file/--cpi-file, atau isi overrides di config/macro.json.
+on:
+  workflow_dispatch:
+  schedule: [{ cron: '17 3 * * 1' }]
+permissions: { contents: write }
+concurrency: { group: macro-calendar, cancel-in-progress: false }
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Ambil jadwal resmi
+        run: node scripts/update-macro.mjs
+        env:
+          MACRO_UA: "macro-calendar-updater (https://github.com/${{ github.repository }})"
+      - name: Commit bila berubah
+        run: |
+          git config user.name "macro-bot"; git config user.email "bot@users.noreply.github.com"
+          git add data/macro-calendar.json
+          git diff --cached --quiet && { echo "Tidak ada perubahan"; exit 0; }
+          git commit -m "chore: update kalender makro [skip ci]"
+          for i in 1 2 3; do git pull --rebase -X theirs origin "${GITHUB_REF_NAME}" && git push && exit 0; sleep $((i*5)); done
+          exit 1
