@@ -314,5 +314,24 @@
   "durationMs": 3867,
   "macro": null,
   "held": 0
+ },
+ {
+  "t": 1793221492196,
+  "iso": "2026-10-28T21:04:52.196Z",
+  "engine": "a6aa2848cf79ffa1a7a1218935ecb9cd99b9310b",
+  "status": "OK",
+  "coins": 40,
+  "analyzed": 39,
+  "failed": [
+   "RWUSD"
+  ],
+  "setups": 19,
+  "added": 3,
+  "merged": 16,
+  "revised": 15,
+  "error": null,
+  "durationMs": 3318,
+  "macro": "FOMC 2026-10-28",
+  "held": 0
  }
 ]
