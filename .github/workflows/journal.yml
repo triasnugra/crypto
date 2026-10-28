@@ -20,7 +20,6 @@ jobs:
         run: node scripts/verify-journal.mjs
       - name: Commit data
         id: commit
-        if: always()
         run: |
           git config user.name "journal-bot"; git config user.email "bot@users.noreply.github.com"
           [ -d data ] && git add -A data || true
