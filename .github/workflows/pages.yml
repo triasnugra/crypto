@@ -1,0 +1,47 @@
+name: Terbitkan situs (Pages)
+
+# Mengapa file ini ada: commit bot memakai GITHUB_TOKEN, dan GitHub sengaja tidak memicu
+# workflow/build Pages dari commit seperti itu. API "request a Pages build" juga menolak
+# GITHUB_TOKEN ("Resource not accessible by integration"). Jadi situs dideploy lewat Actions.
+# workflow_run tetap terpicu walau workflow pemicunya dijalankan oleh GITHUB_TOKEN.
+#
+# SYARAT SEKALI SAJA: Settings > Pages > Build and deployment > Source = "GitHub Actions".
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  workflow_run:
+    workflows: ["Journal Mesin Crypto", "Perbarui kalender makro (FOMC + CPI)"]
+    types: [completed]
+
+permissions: { contents: read, pages: write, id-token: write }
+concurrency: { group: pages, cancel-in-progress: true }
+
+jobs:
+  build:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion != 'cancelled'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Susun folder situs
+        run: |
+          mkdir _site
+          cp index.html engine.mjs validate.mjs eliz-dataset.json _site/
+          cp -r data _site/data
+          touch _site/.nojekyll
+          node -e "console.log('journal di situs:', JSON.parse(require('fs').readFileSync('_site/data/journal.json','utf8')).length, 'entri')"
+          tail -c 400 _site/data/scan-log.json
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: _site }
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
