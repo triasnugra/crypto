@@ -7,6 +7,9 @@ import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { bj, kl, NOT, analyze } from '../engine.mjs';
 import { entryHash, verifyJournal } from './journal-lib.mjs';
+import { loadMacroNode, macroStatus } from '../macro-calendar.mjs';
+
+const ROOT = fileURLToPath(new URL('..', import.meta.url));
 
 export const CFG = {
   topN: 40,                // sama dengan halaman: 40 koin USDT teratas menurut volume 24 jam
@@ -104,6 +107,13 @@ export async function scan(opts = {}) {
   let journal = null;
   try {
     sum.engine = engineSha1();
+    // Kalender makro (FOMC/CPI). Mode default 'alert' TIDAK mengubah jurnal. 'tag' menandai entri baru, 'hold' menahan entri baru
+    // di jendela rilis. Hanya event terverifikasi (override/resmi/seed) yang dihitung; perkiraan tidak pernah menahan apa pun.
+    // Gagal memuat kalender tidak boleh menggagalkan scan: jatuh ke 'tanpa gerbang'.
+    let gate = { mode: 'alert', active: false, hold: false, tag: null };
+    try { const mac = opts.macro ?? await loadMacroNode(ROOT); gate = macroStatus(t0, mac.official, mac.cfg).gate; } catch { /* abaikan */ }
+    const macroTag = gate.mode !== 'alert' ? gate.tag : null;
+    sum.macro = gate.tag; sum.held = 0;
     journal = readJson(jf, []);
     const v = verifyJournal(journal);
     if (!v.ok) throw new Error('JOURNAL_CORRUPT: ' + v.errors.slice(0, 3).join(' | '));
@@ -137,7 +147,12 @@ export async function scan(opts = {}) {
       sum.setups++;
       const cand = { aset: it.r.s, arah: p.side === 1 ? 'LONG' : 'SHORT', entry: r10(p.entry), sl: r10(p.sl), tp: r10(p.tg[0].v) };
       const parent = findParent(journal, cand, it.t, cfg);
-      if (!parent) { journal.push(newEntry(journal, it.r, p, { ...ctx, t: it.t, qv: it.qv }, cfg)); sum.added++; continue; }
+      if (!parent) {
+        if (gate.hold) { sum.held++; continue; }          // tahan entri BARU di jendela rilis; entri lama tetap diperbarui di bawah
+        const e = newEntry(journal, it.r, p, { ...ctx, t: it.t, qv: it.qv }, cfg);
+        if (macroTag) e.macro = macroTag;                  // di luar IMMUTABLE: tidak masuk hash, hanya label untuk analisis
+        journal.push(e); sum.added++; continue;
+      }
       parent.lastSeen = it.t; parent.seen = (parent.seen || 1) + 1; sum.merged++;
       const last = parent.rev?.at(-1) ?? parent;       // level awal tetap beku; perubahan hanya dicatat sebagai revisi
       if (last.entry !== cand.entry || last.sl !== cand.sl || last.tp !== cand.tp) {
