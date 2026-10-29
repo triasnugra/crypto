@@ -333,5 +333,22 @@
   "durationMs": 3318,
   "macro": "FOMC 2026-10-28",
   "held": 0
+ },
+ {
+  "t": 1793252909851,
+  "iso": "2026-10-29T05:48:29.851Z",
+  "engine": "a6aa2848cf79ffa1a7a1218935ecb9cd99b9310b",
+  "status": "OK",
+  "coins": 40,
+  "analyzed": 40,
+  "failed": [],
+  "setups": 29,
+  "added": 15,
+  "merged": 14,
+  "revised": 14,
+  "error": null,
+  "durationMs": 4524,
+  "macro": null,
+  "held": 0
  }
 ]
