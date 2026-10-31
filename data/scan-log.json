@@ -458,5 +458,24 @@
   "durationMs": 2987,
   "macro": null,
   "held": 0
+ },
+ {
+  "t": 1793457130918,
+  "iso": "2026-10-31T14:32:10.918Z",
+  "engine": "a6aa2848cf79ffa1a7a1218935ecb9cd99b9310b",
+  "status": "OK",
+  "coins": 40,
+  "analyzed": 39,
+  "failed": [
+   "RWUSD"
+  ],
+  "setups": 33,
+  "added": 7,
+  "merged": 26,
+  "revised": 24,
+  "error": null,
+  "durationMs": 4392,
+  "macro": null,
+  "held": 0
  }
 ]
